@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import SpriteKit
 
 struct ContentView: View {
+    let scene = GameScene(size: CGSize(width: 667, height: 350))
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        VStack {
+            SpriteView(scene: scene)
+        }
+        
     }
 }
 
