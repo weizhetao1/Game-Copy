@@ -32,7 +32,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func setUpPhysics() {
         physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8)
         physicsWorld.speed = 1.0
-        physicsWorld.contactDelegate = self
+        physicsWorld.contactDelegate = self //informs the class itself upon contacts
     }
     
     private func setUpPlayer() {
@@ -42,7 +42,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody = SKPhysicsBody(circleOfRadius: player.size.height / 2)
         player.physicsBody?.collisionBitMask = 1
         player.physicsBody?.linearDamping = 0
+        player.physicsBody?.friction = 0
         player.scale(to: CGSize(width: 50, height: 50))
+        player.name = "player"
         
         addChild(player)
     }
@@ -66,32 +68,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ground.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 0, y: size.height * 0.25, width: size.width, height: CGFloat(3)))
         ground.physicsBody?.isDynamic = false //The ground will not move.
         ground.physicsBody?.collisionBitMask = 1
+        ground.physicsBody?.friction = 0
         
         addChild(ground)
     }
     
     private func setUpFireButton() {
-        let button = SKShapeNode(circleOfRadius: 20)
-        button.fillColor = UIColor(white: 0.5, alpha: 0.3)
-        button.position = CGPoint(x: size.width * 0.85, y: size.width * 0.15)
-        button.zPosition = 20
-        button.name = "fireButton"
+        let button = ButtonNode.button(position: CGPoint(x: size.width * 0.85, y: size.width * 0.15), zPosition: 20, name: "fireButton")
         
         addChild(button)
     }
     
     private func setUpMoveButtons() {
-        let buttonLeft = SKShapeNode(circleOfRadius: 20)
-        buttonLeft.fillColor = UIColor(white: 0.5, alpha: 0.3)
-        buttonLeft.position = CGPoint(x: size.width * 0.13, y: size.width * 0.15)
-        buttonLeft.zPosition = 21
-        buttonLeft.name = "leftButton"
-        
-        let buttonRight = SKShapeNode(circleOfRadius: 20)
-        buttonRight.fillColor = UIColor(white: 0.5, alpha: 0.3)
-        buttonRight.position = CGPoint(x: size.width * 0.20, y: size.width * 0.15)
-        buttonRight.zPosition = 21
-        buttonRight.name = "rightButton"
+        let buttonLeft = ButtonNode.button(position: CGPoint(x: size.width * 0.13, y: size.width * 0.15), zPosition: 21, name: "leftButton")
+        let buttonRight = ButtonNode.button(position: CGPoint(x: size.width * 0.20, y: size.width * 0.15), zPosition: 21, name: "rightButton")
         
         addChild(buttonLeft)
         addChild(buttonRight)
@@ -105,6 +95,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bullet.position = position //Set bullet position to the argument
         bullet.zPosition = 0
         bullet.physicsBody?.collisionBitMask = 1
+        bullet.physicsBody?.contactTestBitMask = 1
         bullet.physicsBody?.affectedByGravity = false //Bullet not falling
         bullet.physicsBody?.linearDamping = 0 //Stops the bullet from stopping
         bullet.name = "bullet"
@@ -113,11 +104,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func playerMoveLeft() {
-        player.physicsBody?.velocity = CGVector(dx: -30, dy: 0)
+        player.physicsBody?.velocity = CGVector(dx: -50, dy: 0)
     }
     
     private func playerMoveRight() {
-        player.physicsBody?.velocity = CGVector(dx: 30, dy: 0)
+        player.physicsBody?.velocity = CGVector(dx: 50, dy: 0)
     }
     
     private func playerStopsMoving() {
@@ -139,7 +130,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        for touch in touches {
+            let location = touch.location(in: self)
+            let touchedNode = atPoint(location)
+            if touchedNode.name == "leftButton" {
+                playerMoveLeft()
+            } else if touchedNode.name == "rightButton" {
+                playerMoveRight()
+            } else {
+                playerStopsMoving() //Stops character moving if touch has moved outside of buttons
+            }
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            let location = touch.location(in: self)
+            let touchedNode = atPoint(location)
+            if touchedNode.name == "leftButton" {
+                playerStopsMoving()
+            } else if touchedNode.name == "rightButton" {
+                playerStopsMoving()
+            }
+        }
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -148,6 +161,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func destroy(node: SKNode?) {
         node?.removeFromParent()
+        
     }
 
     func didBegin(_ contact: SKPhysicsContact) {
