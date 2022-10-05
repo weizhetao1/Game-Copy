@@ -14,6 +14,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var player: SKSpriteNode!
     private var enemy: SKSpriteNode!
     private var enemyHealth: Int = 100
+    private var playerInAir: Bool = false
     
     override func didMove(to view: SKView) {
         setUpPhysics()
@@ -23,6 +24,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setUpBoundaries()
         setUpFireButton()
         setUpMoveButtons()
+        setUpJumpButton()
     }
     
     private func setUpBackground() {
@@ -43,6 +45,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody?.collisionBitMask = 1
         player.physicsBody?.linearDamping = 0
         player.physicsBody?.friction = 0
+        player.physicsBody?.mass = 10
+        player.physicsBody?.restitution = 0
         player.scale(to: CGSize(width: 50, height: 50))
         player.name = "player"
         
@@ -69,22 +73,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ground.physicsBody?.isDynamic = false //The ground will not move.
         ground.physicsBody?.collisionBitMask = 1
         ground.physicsBody?.friction = 0
+        ground.physicsBody?.restitution = 0
         
         addChild(ground)
     }
     
     private func setUpFireButton() {
-        let button = ButtonNode.button(position: CGPoint(x: size.width * 0.85, y: size.width * 0.15), zPosition: 20, name: "fireButton")
+        let button = ButtonNode(position: CGPoint(x: size.width * 0.85, y: size.width * 0.15), zPosition: 20, name: "fireButton")
         
         addChild(button)
     }
     
     private func setUpMoveButtons() {
-        let buttonLeft = ButtonNode.button(position: CGPoint(x: size.width * 0.13, y: size.width * 0.15), zPosition: 21, name: "leftButton")
-        let buttonRight = ButtonNode.button(position: CGPoint(x: size.width * 0.20, y: size.width * 0.15), zPosition: 21, name: "rightButton")
+        let buttonLeft = ButtonNode(position: CGPoint(x: size.width * 0.13, y: size.width * 0.15), zPosition: 21, name: "leftButton")
+        let buttonRight = ButtonNode(position: CGPoint(x: size.width * 0.20, y: size.width * 0.15), zPosition: 21, name: "rightButton")
         
         addChild(buttonLeft)
         addChild(buttonRight)
+    }
+    
+    private func setUpJumpButton() {
+        let jumpButton = ButtonNode(position: CGPoint(x: size.width * 0.78, y: size.width * 0.17), zPosition: 22, name: "jumpButton")
+        
+        addChild(jumpButton)
     }
     
     private func shootBullet(position: CGPoint) {
@@ -115,16 +126,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
     }
     
+    private func playerJump() {
+        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 5000))
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in: self)
             let touchedNode = atPoint(location)
-            if touchedNode.name == "fireButton" {
+            let name = touchedNode.name
+            if name == "fireButton" {
                 shootBullet(position: player.position)
-            } else if touchedNode.name == "leftButton" {
+            } else if name == "leftButton" {
                 playerMoveLeft()
-            } else if touchedNode.name == "rightButton" {
+            } else if name == "rightButton" {
                 playerMoveRight()
+            } else if name == "jumpButton" {
+                playerJump()
             }
         }
     }
@@ -156,7 +174,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
-
+        <#code#>
     }
     
     private func destroy(node: SKNode?) {
