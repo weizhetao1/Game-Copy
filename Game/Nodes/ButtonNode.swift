@@ -10,17 +10,21 @@ import SpriteKit
 
 class ButtonNode: SKShapeNode {
     
+    private var action: () -> Void = {} //Empty function for error at super.init, doesn't change functionality
+    
     override init() {
         super.init()
     }
     
-    convenience init(position: CGPoint, zPosition: CGFloat, name: String) {
+    convenience init(position: CGPoint, zPosition: CGFloat, name: String, action: @escaping () -> Void) {
         self.init()
         self.init(circleOfRadius: 20)
         self.fillColor = UIColor(white: 0.5, alpha: 0.3)
         self.position = position
         self.zPosition = zPosition
         self.name = name
+        self.action = action
+        self.isUserInteractionEnabled = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -32,7 +36,7 @@ class ButtonNode: SKShapeNode {
             let location = touch.location(in: self)
             let touchedNode = atPoint(location)
             if touchedNode == self {
-
+                action()
             }
         }
     }
