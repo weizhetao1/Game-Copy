@@ -12,8 +12,6 @@ import GameplayKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var player: SKSpriteNode!
-    private var enemy: SKSpriteNode!
-    private var enemyHealth: Int = 100
     private var leftTouched: Bool = false
     private var rightTouched: Bool = false
     private var doubleJumpUsed: Bool = false
@@ -64,16 +62,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func setUpEnemy() {
-        enemy = SKSpriteNode(imageNamed: "Stickman")
-        enemy.position = CGPoint(x: size.width * 0.75, y: size.height * 0.5)
-        enemy.zPosition = 0
-        enemy.physicsBody = SKPhysicsBody(circleOfRadius: enemy.size.height / 2)
-        enemy.physicsBody?.contactTestBitMask = 1
-        enemy.physicsBody?.collisionBitMask = 1
-        enemy.scale(to: CGSize(width: 50, height: 50))
-        enemy.name = "enemy"
-        
-        addChild(enemy)
+        for i in 0...5 {
+            let enemy = Enemy(imageNamed: "Stickman", position: CGPoint(x: size.width * 0.5+0.05*CGFloat(i), y: size.height * 0.5),
+                              zPosition: 0, name: "enemy", collisionBitmask: 1, contactTestBitmask: 1, health: 100)
+            enemy.scale(to: CGSize(width: 40, height: 40))
+            addChild(enemy)
+        }
     }
     
     private func setUpBoundaries() {
@@ -202,15 +196,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func didBegin(_ contact: SKPhysicsContact) {
+        guard let nodeA = contact.bodyA.node else { return }
+        guard let nodeB = contact.bodyB.node else { return }
         if inContact(contact: contact, "bullet", "enemy") {
-            enemyHealth -= 10
-            if contact.bodyA.node?.name == "bullet" {
-                destroy(node: contact.bodyA.node)
-            } else if contact.bodyB.node?.name == "bullet" {
-                destroy(node: contact.bodyB.node)
+            self.enumerateChildNodes(withName: "enemy") {
+                node, _ in //Iterates through list of enemies
+                if let enemy = node as? Enemy { //make sure that they are of type Enemy
+                    if nodeA.isEqual(to: enemy) || nodeB.isEqual(to: enemy) {
+                        enemy.takeDamage(of: 10) //let enemy take damage if involved in the collision
+                        return
+                    }
+                }
             }
-            if enemyHealth <= 0 {
-                destroy(node: enemy)
+            if nodeA.name == "bullet" {
+                destroy(node: nodeA)
+            } else if nodeB.name == "bullet" {
+                destroy(node: nodeB)
             }
         } else if inContact(contact: contact, "player", "ground") {
             playerInAir = false
