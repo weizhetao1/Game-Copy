@@ -14,6 +14,7 @@
 		C52F1F2028CF2BEB001B97BD /* GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52F1F1F28CF2BEB001B97BD /* GameTests.swift */; };
 		C52F1F2A28CF2BEB001B97BD /* GameUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52F1F2928CF2BEB001B97BD /* GameUITests.swift */; };
 		C52F1F2C28CF2BEB001B97BD /* GameUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52F1F2B28CF2BEB001B97BD /* GameUITestsLaunchTests.swift */; };
+		C5417A73290FDA84007BE863 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5417A72290FDA84007BE863 /* Player.swift */; };
 		C5AB8F8028D1E96600787D73 /* SpriteComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AB8F7F28D1E96600787D73 /* SpriteComponent.swift */; };
 		C5AB8F8428D1ECA600787D73 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AB8F8328D1ECA600787D73 /* Base.swift */; };
 		C5AB8F8628D1ED4000787D73 /* EntitiesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AB8F8528D1ED4000787D73 /* EntitiesManager.swift */; };
@@ -50,6 +51,7 @@
 		C52F1F2528CF2BEB001B97BD /* GameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C52F1F2928CF2BEB001B97BD /* GameUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameUITests.swift; sourceTree = "<group>"; };
 		C52F1F2B28CF2BEB001B97BD /* GameUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		C5417A72290FDA84007BE863 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		C5AB8F7F28D1E96600787D73 /* SpriteComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteComponent.swift; sourceTree = "<group>"; };
 		C5AB8F8328D1ECA600787D73 /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
 		C5AB8F8528D1ED4000787D73 /* EntitiesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitiesManager.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 		C5D674FC28E8379100927904 /* Nodes */ = {
 			isa = PBXGroup;
 			children = (
+				C5417A72290FDA84007BE863 /* Player.swift */,
 				C5C7E05628F62C25002CF643 /* Enemy.swift */,
 				C5D674FD28E8388000927904 /* ButtonNode.swift */,
 			);
@@ -314,6 +317,7 @@
 				C5C7E05728F62C25002CF643 /* Enemy.swift in Sources */,
 				C5AB8F8028D1E96600787D73 /* SpriteComponent.swift in Sources */,
 				C52F1F0F28CF2BE8001B97BD /* GameApp.swift in Sources */,
+				C5417A73290FDA84007BE863 /* Player.swift in Sources */,
 				C5D674FE28E8388000927904 /* ButtonNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

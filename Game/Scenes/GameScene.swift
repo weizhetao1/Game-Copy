@@ -122,11 +122,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func playerMoveLeft() {
-        player.physicsBody?.velocity = CGVector(dx: -50, dy: 0)
+        //player.physicsBody?.velocity = CGVector(dx: -50, dy: 0)
+        player.physicsBody?.applyImpulse(CGVector(dx: -500, dy: 0))
     }
     
     private func playerMoveRight() {
-        player.physicsBody?.velocity = CGVector(dx: 50, dy: 0)
+        //player.physicsBody?.velocity = CGVector(dx: 50, dy: 0)
+        player.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 0))
     }
     
     private func playerJump() {
@@ -141,37 +143,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        /*for touch in touches {
-            let location = touch.location(in: self)
-            let touchedNode = atPoint(location)
-            let name = touchedNode.name
-        }*/
+
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        /*for touch in touches {
-            let location = touch.location(in: self)
-            let touchedNode = atPoint(location)
-            if touchedNode.name == "leftButton" {
-                playerMoveLeft()
-            } else if touchedNode.name == "rightButton" {
-                playerMoveRight()
-            } else {
-                playerStopsMoving() //Stops character moving if touch has moved outside of buttons
-            }
-        }*/
+
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        /*for touch in touches {
-            let location = touch.location(in: self)
-            let touchedNode = atPoint(location)
-            if touchedNode.name == "leftButton" {
-                playerStopsMoving()
-            } else if touchedNode.name == "rightButton" {
-                playerStopsMoving()
-            }
-        }*/
+
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -181,6 +161,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             playerMoveLeft()
         } else if rightTouched {
             playerMoveRight()
+        }
+        
+        if let velocity = player.physicsBody?.velocity {
+            if velocity.dx > 50 {
+                player.physicsBody?.velocity = CGVector(dx: 50, dy: velocity.dy)
+            } else if velocity.dx < -50 {
+                player.physicsBody?.velocity = CGVector(dx: -50, dy: velocity.dy)
+            }
         }
     }
     
@@ -197,7 +185,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func didBegin(_ contact: SKPhysicsContact) {
         guard let nodeA = contact.bodyA.node else { return }
-        guard let nodeB = contact.bodyB.node else { return }
+        guard let nodeB = contact.bodyB.node else { return } //make sure 2 nodes exist for the contact
         if inContact(contact: contact, "bullet", "enemy") {
             self.enumerateChildNodes(withName: "enemy") {
                 node, _ in //Iterates through list of enemies

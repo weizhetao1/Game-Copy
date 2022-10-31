@@ -55,8 +55,9 @@ class ButtonNode: SKShapeNode {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let parent = self.parent else { return }
         for touch in touches {
-            let location = touch.location(in: self)
+            let location = touch.location(in: parent)
             if !self.frame.contains(location) {
                 state = .active //resets the button state if touch leaves the frame of the button node.
             }
