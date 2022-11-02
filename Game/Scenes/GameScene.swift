@@ -11,17 +11,9 @@ import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    private var player: SKSpriteNode!
+    private var player: Player!
     private var leftTouched: Bool = false
     private var rightTouched: Bool = false
-    private var doubleJumpUsed: Bool = false
-    private var playerInAir: Bool = false {
-        didSet {
-            if playerInAir == false {
-                doubleJumpUsed = false
-            }
-        }
-    }
     
     override func didMove(to view: SKView) {
         setUpPhysics()
@@ -45,18 +37,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func setUpPlayer() {
-        player = SKSpriteNode(imageNamed: "Stickman")
-        player.position = CGPoint(x: size.width * 0.25, y: size.height * 0.5)
-        player.zPosition = 0
-        player.physicsBody = SKPhysicsBody(circleOfRadius: player.size.height / 2)
-        player.physicsBody?.collisionBitMask = 1
-        player.physicsBody?.linearDamping = 0
-        player.physicsBody?.friction = 0.6
-        player.physicsBody?.mass = 10
-        player.physicsBody?.restitution = 0
-        player.physicsBody?.contactTestBitMask = 2
-        player.scale(to: CGSize(width: 50, height: 50))
-        player.name = "player"
+        player = Player(position: CGPoint(x: size.width * 0.25, y: size.height * 0.5), zPosition: 1,
+                        collisionBitmask: 1, contactTestBitmask: 2)
         
         addChild(player)
     }
@@ -85,7 +67,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func setUpFireButton() {
-        let button = ButtonNode(position: CGPoint(x: size.width * 0.85, y: size.width * 0.15), zPosition: 20, name: "fireButton", action: playerShootBullet)
+        let button = ButtonNode(position: CGPoint(x: size.width * 0.85, y: size.width * 0.15), zPosition: 20, name: "fireButton", action: player.shootBullet)
         addChild(button)
     }
     
@@ -101,47 +83,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func setUpJumpButton() {
-        let jumpButton = ButtonNode(position: CGPoint(x: size.width * 0.78, y: size.width * 0.17), zPosition: 22, name: "jumpButton", action: playerJump)
+        let jumpButton = ButtonNode(position: CGPoint(x: size.width * 0.78, y: size.width * 0.17), zPosition: 22, name: "jumpButton", action: player.jump)
         addChild(jumpButton)
-    }
-    
-    private func playerShootBullet() {
-        let bullet = SKShapeNode(circleOfRadius: 4.0)
-        bullet.fillColor = UIColor.red
-        bullet.position = player.position //Set bullet position to the player position
-        bullet.zPosition = 0
-        bullet.physicsBody = SKPhysicsBody(circleOfRadius: 4.0)
-        bullet.physicsBody?.velocity = CGVector(dx: 200, dy: 0) //Giving initial velocity
-        bullet.physicsBody?.collisionBitMask = 1
-        bullet.physicsBody?.contactTestBitMask = 1
-        bullet.physicsBody?.affectedByGravity = false //Bullet not falling
-        bullet.physicsBody?.linearDamping = 0 //Stops the bullet from stopping mid air
-        bullet.name = "bullet"
-        
-        addChild(bullet)
-    }
-    
-    private func playerMoveLeft() {
-        guard let velocity = player.physicsBody?.velocity else { return }
-        player.physicsBody?.velocity = CGVector(dx: -50, dy: velocity.dy)
-        //player.physicsBody?.applyImpulse(CGVector(dx: -500, dy: 0))
-    }
-    
-    private func playerMoveRight() {
-        guard let velocity = player.physicsBody?.velocity else { return }
-        player.physicsBody?.velocity = CGVector(dx: 50, dy: velocity.dy)
-        //player.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 0))
-    }
-    
-    private func playerJump() {
-        if doubleJumpUsed == false {
-            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 5000))
-        }
-        if playerInAir == true {
-            doubleJumpUsed = true
-        } else {
-            playerInAir = true
-        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -160,9 +103,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if leftTouched && rightTouched {
             return //do nothing if both right and left are touched
         } else if leftTouched {
-            playerMoveLeft()
+            player.moveLeft()
         } else if rightTouched {
-            playerMoveRight()
+            player.moveRight()
         }
         
         /*
@@ -205,7 +148,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 destroy(node: nodeB)
             }
         } else if inContact(contact: contact, "player", "ground") {
-            playerInAir = false
+            player.inAir = false
         }
     }
 }
