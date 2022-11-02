@@ -122,13 +122,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func playerMoveLeft() {
-        //player.physicsBody?.velocity = CGVector(dx: -50, dy: 0)
-        player.physicsBody?.applyImpulse(CGVector(dx: -500, dy: 0))
+        guard let velocity = player.physicsBody?.velocity else { return }
+        player.physicsBody?.velocity = CGVector(dx: -50, dy: velocity.dy)
+        //player.physicsBody?.applyImpulse(CGVector(dx: -500, dy: 0))
     }
     
     private func playerMoveRight() {
-        //player.physicsBody?.velocity = CGVector(dx: 50, dy: 0)
-        player.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 0))
+        guard let velocity = player.physicsBody?.velocity else { return }
+        player.physicsBody?.velocity = CGVector(dx: 50, dy: velocity.dy)
+        //player.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 0))
     }
     
     private func playerJump() {
@@ -163,13 +165,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             playerMoveRight()
         }
         
+        /*
         if let velocity = player.physicsBody?.velocity {
             if velocity.dx > 50 {
                 player.physicsBody?.velocity = CGVector(dx: 50, dy: velocity.dy)
             } else if velocity.dx < -50 {
                 player.physicsBody?.velocity = CGVector(dx: -50, dy: velocity.dy)
             }
-        }
+        }*/
     }
     
     private func destroy(node: SKNode?) {

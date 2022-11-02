@@ -43,10 +43,29 @@ class Player: SKSpriteNode {
     }
     
     func moveLeft() {
-        self.physicsBody?.applyImpulse(CGVector(dx: -500, dy: 0))
+        guard let velocity = self.physicsBody?.velocity else { return }
+        self.physicsBody?.velocity = CGVector(dx: -50, dy: velocity.dy)
     }
     
     func moveRight() {
-        self.physicsBody?.applyImpulse(CGVector(dx: 500, dy: 0))
+        guard let velocity = self.physicsBody?.velocity else { return }
+        self.physicsBody?.velocity = CGVector(dx: 50, dy: velocity.dy)
+    }
+    
+    private func shootBullet() {
+        guard let parent = self.parent else { return } //make sure player has a parent (normally GameScene)
+        let bullet = SKShapeNode(circleOfRadius: 4.0)
+        bullet.fillColor = UIColor.red
+        bullet.position = self.position //Set bullet position to the player position
+        bullet.zPosition = 0
+        bullet.physicsBody = SKPhysicsBody(circleOfRadius: 4.0)
+        bullet.physicsBody?.velocity = CGVector(dx: 200, dy: 0) //Giving initial velocity
+        bullet.physicsBody?.collisionBitMask = 1
+        bullet.physicsBody?.contactTestBitMask = 1
+        bullet.physicsBody?.affectedByGravity = false //Bullet not falling
+        bullet.physicsBody?.linearDamping = 0 //Stops the bullet from stopping mid air
+        bullet.name = "bullet"
+        
+        parent.addChild(bullet)
     }
 }
