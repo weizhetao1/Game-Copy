@@ -21,9 +21,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setUpEnemy()
         setUpBackground()
         setUpBoundaries()
-        setUpFireButton()
-        setUpMoveButtons()
-        setUpJumpButton()
+        setUpButtons()
     }
     
     private func setUpBackground() {
@@ -66,25 +64,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(ground)
     }
     
-    private func setUpFireButton() {
-        let button = ButtonNode(position: CGPoint(x: size.width * 0.85, y: size.width * 0.15), zPosition: 20, name: "fireButton", action: player.shootBullet)
-        addChild(button)
-    }
-    
-    private func setUpMoveButtons() {
+    private func setUpButtons() {
+        let fireButton = ButtonNode(position: CGPoint(x: size.width * 0.85, y: size.width * 0.15), zPosition: 20, name: "fireButton", action: player.shootBullet)
         let buttonLeft = ButtonNode(position: CGPoint(x: size.width * 0.13, y: size.width * 0.15), zPosition: 21, name: "leftButton",
                                     action: { self.leftTouched = true },
                                     endAction: { self.leftTouched = false })
         let buttonRight = ButtonNode(position: CGPoint(x: size.width * 0.20, y: size.width * 0.15), zPosition: 21, name: "rightButton",
                                      action: { self.rightTouched = true },
                                      endAction: { self.rightTouched = false })
+        let jumpButton = ButtonNode(position: CGPoint(x: size.width * 0.78, y: size.width * 0.17), zPosition: 22, name: "jumpButton", action: player.jump)
+        
+        addChild(fireButton)
+        addChild(jumpButton)
         addChild(buttonLeft)
         addChild(buttonRight)
-    }
-    
-    private func setUpJumpButton() {
-        let jumpButton = ButtonNode(position: CGPoint(x: size.width * 0.78, y: size.width * 0.17), zPosition: 22, name: "jumpButton", action: player.jump)
-        addChild(jumpButton)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

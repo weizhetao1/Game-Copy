@@ -72,7 +72,7 @@ class Player: SKSpriteNode {
         bullet.position = CGPoint(x: self.position.x, y: self.position.y) //Set bullet position to the player position
         bullet.zPosition = 0
         bullet.physicsBody = SKPhysicsBody(circleOfRadius: 4.0)
-        bullet.physicsBody?.velocity = CGVector(dx: 200, dy: 0) //Giving initial velocity
+        bullet.physicsBody?.velocity = velocityTowards(node: findClosestEnemy(), speed: 200) //Giving initial velocity
         bullet.physicsBody?.collisionBitMask = 2
         bullet.physicsBody?.contactTestBitMask = 1
         bullet.physicsBody?.affectedByGravity = false //Bullet not falling
@@ -80,5 +80,25 @@ class Player: SKSpriteNode {
         bullet.name = "bullet"
         
         parent.addChild(bullet)
+    }
+    
+    private func findClosestEnemy() -> SKNode? {
+        guard let parent = self.parent else { return nil }
+        var closestNode: SKNode?
+        var closestDistance = CGFloat.infinity
+        parent.enumerateChildNodes(withName: "enemy") {
+            node, _ in
+            let distance = node.distanceTo(node: self)
+            if distance < closestDistance {
+                closestNode = node
+                closestDistance = distance
+            }
+        }
+        return closestNode
+    }
+    
+    private func velocityTowards(node: SKNode?, speed: CGFloat) -> CGVector {
+        let timeNeeded = self.distanceTo(node: node) / speed
+        return CGVector(dx: (node.position.x - self.position.x) / timeNeeded, dy: (node.position.y - self.position.y) / timeNeeded)
     }
 }
