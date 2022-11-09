@@ -9,9 +9,13 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
+let tileSize = CGSize(width: 64, height: 64)
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    private var player: Player!
+    private var player: Player! //There must be a player node, whether dead or alive
+    private var map = SKTileMapNode(tileSet: SKTileSet(named: "Sample Grid Tile Set")!, columns: 24, rows: 8, tileSize: tileSize)
+    private var cameraNode = SKCameraNode()
     private var leftTouched: Bool = false
     private var rightTouched: Bool = false
     
@@ -20,12 +24,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setUpPlayer()
         setUpEnemy()
         setUpBackground()
-        setUpBoundaries()
+        setUpMap()
         setUpButtons()
     }
     
     private func setUpBackground() {
         backgroundColor = UIColor.cyan
+        cameraNode.position = CGPoint(x: size.width / 2 , y: size.width / 2)
+        self.camera = cameraNode
+        cameraNode.xScale = 4
+        cameraNode.yScale = 4
+        addChild(cameraNode)
     }
     
     private func setUpPhysics() {
@@ -45,15 +54,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for i in 0...5 {
             let enemy = Enemy(imageNamed: "Stickman", position: CGPoint(x: size.width * 0.5+0.05*CGFloat(i), y: size.height * 0.5),
                               zPosition: 0, name: "enemy", collisionBitmask: 1, contactTestBitmask: 1, health: 100)
-            enemy.scale(to: CGSize(width: 40, height: 40))
+            enemy.scale(to: CGSize(width: 92, height: 92))
             addChild(enemy)
         }
     }
     
-    private func setUpBoundaries() {
-        let ground = SKShapeNode(rect: CGRect(x: 0, y: size.height * 0.25, width: size.width, height: 3))
-        ground.fillColor = UIColor.white
-        ground.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 0, y: size.height * 0.25, width: size.width, height: CGFloat(3)))
+    private func setUpMap() {
+        /*
+        guard let tileScene = SKScene(fileNamed: "Map1.sks"),
+              let map = tileScene.childNode(withName: "Map1") as? SKTileMapNode else {
+                  fatalError("Map1 not loaded")
+              }
+        map.removeFromParent()*/
+        map.anchorPoint = CGPoint(x: 0, y: 0)
+        
+        let tileSet = SKTileSet(named: "Sample Grid Tile Set") //set a tile set
+        let grassTiles = tileSet?.tileGroups.first { $0.name == "Grass" } //easier references to specific tiles
+        let stoneTiles = tileSet?.tileGroups.first { $0.name == "Cobblestone" }
+        for column in 0..<24 {
+            map.setTileGroup(grassTiles, forColumn: column, row: 0) //paint the ground with grass
+        }
+        for row in 1..<8 {
+            map.setTileGroup(stoneTiles, forColumn: 0, row: row)
+            map.setTileGroup(stoneTiles, forColumn: 23, row: row) //adding walls
+        }
+        
+        addChild(map)
+        
+        let ground = SKShapeNode(rect: CGRect(x: 0, y: 0, width: map.mapSize.width, height: tileSize.height))
+        ground.fillColor = UIColor.clear
+        ground.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 0, y: 0, width: map.mapSize.width, height: tileSize.height))
         ground.physicsBody?.isDynamic = false //The ground will not move.
         ground.physicsBody?.collisionBitMask = 1
         ground.physicsBody?.friction = 0.2
@@ -61,23 +91,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ground.physicsBody?.contactTestBitMask = 2
         ground.name = "ground"
         
-        addChild(ground)
+        map.addChild(ground)
+        
     }
     
     private func setUpButtons() {
-        let fireButton = ButtonNode(position: CGPoint(x: size.width * 0.85, y: size.width * 0.15), zPosition: 20, name: "fireButton", action: player.shootBullet)
-        let buttonLeft = ButtonNode(position: CGPoint(x: size.width * 0.13, y: size.width * 0.15), zPosition: 21, name: "leftButton",
+        let fireButton = ButtonNode(position: CGPoint(x: size.width * 0.35, y: size.height * -0.25), zPosition: 20, name: "fireButton", action: player.shootBullet)
+        let buttonLeft = ButtonNode(position: CGPoint(x: size.width * -0.37, y: size.height * -0.25), zPosition: 21, name: "leftButton",
                                     action: { self.leftTouched = true },
                                     endAction: { self.leftTouched = false })
-        let buttonRight = ButtonNode(position: CGPoint(x: size.width * 0.20, y: size.width * 0.15), zPosition: 21, name: "rightButton",
+        let buttonRight = ButtonNode(position: CGPoint(x: size.width * -0.29, y: size.height * -0.25), zPosition: 21, name: "rightButton",
                                      action: { self.rightTouched = true },
                                      endAction: { self.rightTouched = false })
-        let jumpButton = ButtonNode(position: CGPoint(x: size.width * 0.78, y: size.width * 0.17), zPosition: 22, name: "jumpButton", action: player.jump)
+        let jumpButton = ButtonNode(position: CGPoint(x: size.width * 0.28, y: size.height * -0.20), zPosition: 22, name: "jumpButton", action: player.jump)
         
-        addChild(fireButton)
-        addChild(jumpButton)
-        addChild(buttonLeft)
-        addChild(buttonRight)
+        cameraNode.addChild(fireButton)
+        cameraNode.addChild(jumpButton)
+        cameraNode.addChild(buttonLeft)
+        cameraNode.addChild(buttonRight)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -101,14 +132,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.moveRight()
         }
         
-        /*
-        if let velocity = player.physicsBody?.velocity {
-            if velocity.dx > 50 {
-                player.physicsBody?.velocity = CGVector(dx: 50, dy: velocity.dy)
-            } else if velocity.dx < -50 {
-                player.physicsBody?.velocity = CGVector(dx: -50, dy: velocity.dy)
-            }
-        }*/
+        updateCameraPosition()
+    }
+    
+    private func updateCameraPosition() {
+        cameraNode.position = player.position //set camera position to player position
     }
     
     private func destroy(node: SKNode?) {

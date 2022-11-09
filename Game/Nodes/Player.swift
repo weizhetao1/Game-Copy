@@ -33,7 +33,7 @@ class Player: SKSpriteNode {
         self.physicsBody?.mass = 10
         self.physicsBody?.restitution = 0
         self.physicsBody?.categoryBitMask = 1
-        self.scale(to: CGSize(width: 50, height: 50))
+        self.scale(to: CGSize(width: 128, height: 128))
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -73,7 +73,7 @@ class Player: SKSpriteNode {
         bullet.zPosition = 0
         bullet.physicsBody = SKPhysicsBody(circleOfRadius: 4.0)
         bullet.physicsBody?.velocity = velocityTowards(node: findClosestEnemy(), speed: 200) //Giving initial velocity
-        bullet.physicsBody?.collisionBitMask = 2
+        bullet.physicsBody?.collisionBitMask = 0
         bullet.physicsBody?.contactTestBitMask = 1
         bullet.physicsBody?.affectedByGravity = false //Bullet not falling
         bullet.physicsBody?.linearDamping = 0 //Stops the bullet from stopping mid air
@@ -83,21 +83,24 @@ class Player: SKSpriteNode {
     }
     
     private func findClosestEnemy() -> SKNode? {
-        guard let parent = self.parent else { return nil }
-        var closestNode: SKNode?
+        guard let parent = self.parent else { return nil } //return if player doesn't have a parent
+        var closestNode: SKNode? //might not be one so optional
         var closestDistance = CGFloat.infinity
         parent.enumerateChildNodes(withName: "enemy") {
             node, _ in
             let distance = node.distanceTo(node: self)
             if distance < closestDistance {
                 closestNode = node
-                closestDistance = distance
+                closestDistance = distance //finding closest enemy node
             }
         }
         return closestNode
     }
     
     private func velocityTowards(node: SKNode?, speed: CGFloat) -> CGVector {
+        guard let node = node else {
+            return CGVector(dx: speed, dy: 0) //A default velocity if there is no closest enemy
+        }
         let timeNeeded = self.distanceTo(node: node) / speed
         return CGVector(dx: (node.position.x - self.position.x) / timeNeeded, dy: (node.position.y - self.position.y) / timeNeeded)
     }
