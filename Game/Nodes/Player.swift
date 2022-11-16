@@ -11,6 +11,7 @@ import SpriteKit
 class Player: SKSpriteNode {
     
     private var doubleJumpUsed: Bool = false
+    private var horizontalSpeed: CGFloat = 150
     var inAir: Bool = false {
         didSet {
             if inAir == false {
@@ -33,6 +34,7 @@ class Player: SKSpriteNode {
         self.physicsBody?.mass = 10
         self.physicsBody?.restitution = 0
         self.physicsBody?.categoryBitMask = 1
+        //self.physicsBody?.allowsRotation = false
         self.scale(to: CGSize(width: 128, height: 128))
     }
     
@@ -46,12 +48,12 @@ class Player: SKSpriteNode {
     
     func moveLeft() {
         guard let velocity = self.physicsBody?.velocity else { return }
-        self.physicsBody?.velocity = CGVector(dx: -50, dy: velocity.dy)
+        self.physicsBody?.velocity = CGVector(dx: -horizontalSpeed, dy: velocity.dy)
     }
     
     func moveRight() {
         guard let velocity = self.physicsBody?.velocity else { return }
-        self.physicsBody?.velocity = CGVector(dx: 50, dy: velocity.dy)
+        self.physicsBody?.velocity = CGVector(dx: horizontalSpeed, dy: velocity.dy)
     }
     
     func jump() {

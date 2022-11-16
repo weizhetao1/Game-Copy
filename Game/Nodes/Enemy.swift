@@ -29,6 +29,7 @@ class Enemy: SKSpriteNode {
         self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width / 2)
         self.physicsBody?.contactTestBitMask = contactTestBitmask
         self.physicsBody?.collisionBitMask = collisionBitmask
+        self.physicsBody?.allowsRotation = false
     }
     
     override func removeFromParent() {

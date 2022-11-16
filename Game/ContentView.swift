@@ -9,7 +9,10 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-    let scene = GameScene(size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+    var scene: GameScene {
+        let scene = GameScene(size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+        return scene
+    }
     var body: some View {
         VStack {
             SpriteView(scene: scene)

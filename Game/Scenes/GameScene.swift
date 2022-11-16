@@ -9,12 +9,9 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
-let tileSize = CGSize(width: 64, height: 64)
-
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var player: Player! //There must be a player node, whether dead or alive
-    private var map = SKTileMapNode(tileSet: SKTileSet(named: "Sample Grid Tile Set")!, columns: 24, rows: 8, tileSize: tileSize)
     private var cameraNode = SKCameraNode()
     private var leftTouched: Bool = false
     private var rightTouched: Bool = false
@@ -26,6 +23,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setUpBackground()
         setUpMap()
         setUpButtons()
+        self.view?.showsPhysics = true
     }
     
     private func setUpBackground() {
@@ -60,39 +58,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func setUpMap() {
-        /*
-        guard let tileScene = SKScene(fileNamed: "Map1.sks"),
-              let map = tileScene.childNode(withName: "Map1") as? SKTileMapNode else {
-                  fatalError("Map1 not loaded")
-              }
-        map.removeFromParent()*/
-        map.anchorPoint = CGPoint(x: 0, y: 0)
-        
-        let tileSet = SKTileSet(named: "Sample Grid Tile Set") //set a tile set
-        let grassTiles = tileSet?.tileGroups.first { $0.name == "Grass" } //easier references to specific tiles
-        let stoneTiles = tileSet?.tileGroups.first { $0.name == "Cobblestone" }
-        for column in 0..<24 {
-            map.setTileGroup(grassTiles, forColumn: column, row: 0) //paint the ground with grass
-        }
-        for row in 1..<8 {
-            map.setTileGroup(stoneTiles, forColumn: 0, row: row)
-            map.setTileGroup(stoneTiles, forColumn: 23, row: row) //adding walls
-        }
-        
-        addChild(map)
-        
-        let ground = SKShapeNode(rect: CGRect(x: 0, y: 0, width: map.mapSize.width, height: tileSize.height))
-        ground.fillColor = UIColor.clear
-        ground.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 0, y: 0, width: map.mapSize.width, height: tileSize.height))
-        ground.physicsBody?.isDynamic = false //The ground will not move.
-        ground.physicsBody?.collisionBitMask = 1
-        ground.physicsBody?.friction = 0.2
-        ground.physicsBody?.restitution = 0
-        ground.physicsBody?.contactTestBitMask = 2
-        ground.name = "ground"
-        
-        map.addChild(ground)
-        
+        let mapGenerator = MapGenerator()
+        mapGenerator.setUpTileMap(fileNamed: "Map1.sks")
+        addChild(mapGenerator.tileMap)
     }
     
     private func setUpButtons() {

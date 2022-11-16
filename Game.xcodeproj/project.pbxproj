@@ -18,8 +18,8 @@
 		C54EF24C291B1518004DD785 /* SampleTileSet.sks in Resources */ = {isa = PBXBuildFile; fileRef = C54EF24A291B1518004DD785 /* SampleTileSet.sks */; };
 		C54EF24D291B1518004DD785 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C54EF24B291B1518004DD785 /* Assets.xcassets */; };
 		C54EF293291B1B97004DD785 /* Map1.sks in Resources */ = {isa = PBXBuildFile; fileRef = C54EF292291B1B97004DD785 /* Map1.sks */; };
+		C58357C6292508D600A5C0B6 /* MapGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58357C5292508D600A5C0B6 /* MapGenerator.swift */; };
 		C59E262129190F2E0091E81E /* SKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59E262029190F2E0091E81E /* SKNode.swift */; };
-		C5AB8F8428D1ECA600787D73 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AB8F8328D1ECA600787D73 /* Base.swift */; };
 		C5AB8F8F28D1FBA500787D73 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AB8F8E28D1FBA500787D73 /* GameScene.swift */; };
 		C5C7E05728F62C25002CF643 /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C7E05628F62C25002CF643 /* Enemy.swift */; };
 		C5D674FE28E8388000927904 /* ButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D674FD28E8388000927904 /* ButtonNode.swift */; };
@@ -57,8 +57,8 @@
 		C54EF24A291B1518004DD785 /* SampleTileSet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = SampleTileSet.sks; sourceTree = "<group>"; };
 		C54EF24B291B1518004DD785 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C54EF292291B1B97004DD785 /* Map1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Map1.sks; sourceTree = "<group>"; };
+		C58357C5292508D600A5C0B6 /* MapGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGenerator.swift; sourceTree = "<group>"; };
 		C59E262029190F2E0091E81E /* SKNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNode.swift; sourceTree = "<group>"; };
-		C5AB8F8328D1ECA600787D73 /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
 		C5AB8F8E28D1FBA500787D73 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		C5C7E05628F62C25002CF643 /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
 		C5D674FD28E8388000927904 /* ButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonNode.swift; sourceTree = "<group>"; };
@@ -117,7 +117,7 @@
 				C59E261F29190F1C0091E81E /* Extensions */,
 				C5AB8F8D28D1FB7200787D73 /* Scenes */,
 				C5D674FC28E8379100927904 /* Nodes */,
-				C5AB8F8128D1EC6B00787D73 /* Entities */,
+				C5AB8F8128D1EC6B00787D73 /* Models */,
 				C52F1F0E28CF2BE8001B97BD /* GameApp.swift */,
 				C52F1F1028CF2BE8001B97BD /* ContentView.swift */,
 				C52F1F1228CF2BEB001B97BD /* Assets.xcassets */,
@@ -176,12 +176,12 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		C5AB8F8128D1EC6B00787D73 /* Entities */ = {
+		C5AB8F8128D1EC6B00787D73 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C5AB8F8328D1ECA600787D73 /* Base.swift */,
+				C58357C5292508D600A5C0B6 /* MapGenerator.swift */,
 			);
-			path = Entities;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		C5AB8F8D28D1FB7200787D73 /* Scenes */ = {
@@ -337,7 +337,7 @@
 			files = (
 				C5AB8F8F28D1FBA500787D73 /* GameScene.swift in Sources */,
 				C52F1F1128CF2BE8001B97BD /* ContentView.swift in Sources */,
-				C5AB8F8428D1ECA600787D73 /* Base.swift in Sources */,
+				C58357C6292508D600A5C0B6 /* MapGenerator.swift in Sources */,
 				C5C7E05728F62C25002CF643 /* Enemy.swift in Sources */,
 				C59E262129190F2E0091E81E /* SKNode.swift in Sources */,
 				C52F1F0F28CF2BE8001B97BD /* GameApp.swift in Sources */,
