@@ -19,6 +19,7 @@
 		C54EF24D291B1518004DD785 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C54EF24B291B1518004DD785 /* Assets.xcassets */; };
 		C54EF293291B1B97004DD785 /* Map1.sks in Resources */ = {isa = PBXBuildFile; fileRef = C54EF292291B1B97004DD785 /* Map1.sks */; };
 		C58357C6292508D600A5C0B6 /* MapGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58357C5292508D600A5C0B6 /* MapGenerator.swift */; };
+		C59C7BBC292D9DC200BDB0E7 /* HealthBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59C7BBB292D9DC200BDB0E7 /* HealthBar.swift */; };
 		C59E262129190F2E0091E81E /* SKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59E262029190F2E0091E81E /* SKNode.swift */; };
 		C5AB8F8F28D1FBA500787D73 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AB8F8E28D1FBA500787D73 /* GameScene.swift */; };
 		C5C7E05728F62C25002CF643 /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C7E05628F62C25002CF643 /* Enemy.swift */; };
@@ -58,6 +59,7 @@
 		C54EF24B291B1518004DD785 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C54EF292291B1B97004DD785 /* Map1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Map1.sks; sourceTree = "<group>"; };
 		C58357C5292508D600A5C0B6 /* MapGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGenerator.swift; sourceTree = "<group>"; };
+		C59C7BBB292D9DC200BDB0E7 /* HealthBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthBar.swift; sourceTree = "<group>"; };
 		C59E262029190F2E0091E81E /* SKNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNode.swift; sourceTree = "<group>"; };
 		C5AB8F8E28D1FBA500787D73 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		C5C7E05628F62C25002CF643 /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				C5417A72290FDA84007BE863 /* Player.swift */,
+				C59C7BBB292D9DC200BDB0E7 /* HealthBar.swift */,
 				C5C7E05628F62C25002CF643 /* Enemy.swift */,
 				C5D674FD28E8388000927904 /* ButtonNode.swift */,
 			);
@@ -336,6 +339,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5AB8F8F28D1FBA500787D73 /* GameScene.swift in Sources */,
+				C59C7BBC292D9DC200BDB0E7 /* HealthBar.swift in Sources */,
 				C52F1F1128CF2BE8001B97BD /* ContentView.swift in Sources */,
 				C58357C6292508D600A5C0B6 /* MapGenerator.swift in Sources */,
 				C5C7E05728F62C25002CF643 /* Enemy.swift in Sources */,

@@ -33,13 +33,13 @@ class ButtonNode: SKShapeNode {
         super.init()
     }
     
-    convenience init(position: CGPoint, zPosition: CGFloat, name: String, action: @escaping () -> Void, endAction: @escaping () -> Void = {}) {
+    convenience init(position: CGPoint, name: String, action: @escaping () -> Void, endAction: @escaping () -> Void = {}) {
         // No need to specify endAction if not wanted. Will be an empty closure by default
         self.init()
         self.init(circleOfRadius: 20)
         self.fillColor = UIColor(white: 0.5, alpha: 0.3)
         self.position = position
-        self.zPosition = zPosition
+        self.zPosition = 10
         self.name = name
         self.action = action
         self.endAction = endAction

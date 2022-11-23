@@ -15,10 +15,9 @@ struct ContentView: View {
     }
     var body: some View {
         VStack {
-            SpriteView(scene: scene)
+            SpriteView(scene: scene, debugOptions: SpriteView.DebugOptions.showsPhysics)
                 .ignoresSafeArea()
         }
-        
     }
 }
 

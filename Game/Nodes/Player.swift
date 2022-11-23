@@ -10,8 +10,11 @@ import SpriteKit
 
 class Player: SKSpriteNode {
     
+    var health: CGFloat = 100
+    var maxHealth: CGFloat = 150
     private var doubleJumpUsed: Bool = false
     private var horizontalSpeed: CGFloat = 150
+    private var jumpImpulse: CGFloat = 10000
     var inAir: Bool = false {
         didSet {
             if inAir == false {
@@ -26,7 +29,7 @@ class Player: SKSpriteNode {
         self.position = position
         self.zPosition = zPosition
         self.name = "player"
-        self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
+        self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width / 2)
         self.physicsBody?.contactTestBitMask = contactTestBitmask
         self.physicsBody?.collisionBitMask = collisionBitmask
         self.physicsBody?.linearDamping = 0
@@ -34,7 +37,7 @@ class Player: SKSpriteNode {
         self.physicsBody?.mass = 10
         self.physicsBody?.restitution = 0
         self.physicsBody?.categoryBitMask = 1
-        //self.physicsBody?.allowsRotation = false
+        self.physicsBody?.allowsRotation = false
         self.scale(to: CGSize(width: 128, height: 128))
     }
     
@@ -58,13 +61,29 @@ class Player: SKSpriteNode {
     
     func jump() {
         if doubleJumpUsed == false {
-            self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 5000))
+            self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: jumpImpulse))
         }
         if inAir == true {
             doubleJumpUsed = true
         } else {
             inAir = true
         }
+    }
+    
+    func gainHealth(of gain: CGFloat) {
+        self.health += gain
+    }
+    
+    func gainHealth() {
+        self.health += 9
+    }
+    
+    func takeDamage(of damage: CGFloat) {
+        self.health -= damage
+    }
+    
+    func takeDamage() {
+        self.health -= 11
     }
     
     func shootBullet() {

@@ -12,6 +12,7 @@ import GameplayKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var player: Player! //There must be a player node, whether dead or alive
+    private var healthBar: HealthBar! //initiate health bar
     private var cameraNode = SKCameraNode()
     private var leftTouched: Bool = false
     private var rightTouched: Bool = false
@@ -22,16 +23,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setUpEnemy()
         setUpBackground()
         setUpMap()
-        setUpButtons()
-        self.view?.showsPhysics = true
+        setUpUI()
     }
     
     private func setUpBackground() {
         backgroundColor = UIColor.cyan
         cameraNode.position = CGPoint(x: size.width / 2 , y: size.width / 2)
         self.camera = cameraNode
-        cameraNode.xScale = 4
-        cameraNode.yScale = 4
+        cameraNode.xScale = 3
+        cameraNode.yScale = 3
         addChild(cameraNode)
     }
     
@@ -63,32 +63,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(mapGenerator.tileMap)
     }
     
-    private func setUpButtons() {
-        let fireButton = ButtonNode(position: CGPoint(x: size.width * 0.35, y: size.height * -0.25), zPosition: 20, name: "fireButton", action: player.shootBullet)
-        let buttonLeft = ButtonNode(position: CGPoint(x: size.width * -0.37, y: size.height * -0.25), zPosition: 21, name: "leftButton",
+    private func setUpUI() {
+        let fireButton = ButtonNode(position: CGPoint(x: size.width * 0.35, y: size.height * -0.25), name: "fireButton", action: player.shootBullet)
+        let buttonLeft = ButtonNode(position: CGPoint(x: size.width * -0.37, y: size.height * -0.25), name: "leftButton",
                                     action: { self.leftTouched = true },
                                     endAction: { self.leftTouched = false })
-        let buttonRight = ButtonNode(position: CGPoint(x: size.width * -0.29, y: size.height * -0.25), zPosition: 21, name: "rightButton",
+        let buttonRight = ButtonNode(position: CGPoint(x: size.width * -0.29, y: size.height * -0.25), name: "rightButton",
                                      action: { self.rightTouched = true },
                                      endAction: { self.rightTouched = false })
-        let jumpButton = ButtonNode(position: CGPoint(x: size.width * 0.28, y: size.height * -0.20), zPosition: 22, name: "jumpButton", action: player.jump)
+        let jumpButton = ButtonNode(position: CGPoint(x: size.width * 0.28, y: size.height * -0.20), name: "jumpButton", action: player.jump)
         
         cameraNode.addChild(fireButton)
         cameraNode.addChild(jumpButton)
         cameraNode.addChild(buttonLeft)
         cameraNode.addChild(buttonRight)
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-
+        
+        let testButton1 = ButtonNode(position: CGPoint(x: size.width * -0.05, y: size.height * -0.20), name: "gainHealth", action: player.gainHealth)
+        let testButton2 = ButtonNode(position: CGPoint(x: size.width * 0.05, y: size.height * -0.20), name: "loseHealth", action: player.takeDamage)
+        
+        cameraNode.addChild(testButton1)
+        cameraNode.addChild(testButton2)
+        
+        healthBar = HealthBar(screenSize: self.size, playerObject: player)
+        cameraNode.addChild(healthBar) //add to UI layer (camera node)
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -101,6 +98,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         updateCameraPosition()
+        
+        healthBar.updateHealthBar() //update health bar
     }
     
     private func updateCameraPosition() {
