@@ -10,7 +10,15 @@ import SpriteKit
 
 class Player: SKSpriteNode {
     
-    var health: CGFloat = 100
+    var health: CGFloat = 100 {
+        didSet {
+            if health <= 0 {
+                health = 0 //doesn't drop below 0
+            } else if health > maxHealth {
+                health = maxHealth //limit to max health
+            }
+        }
+    }
     var maxHealth: CGFloat = 150
     private var doubleJumpUsed: Bool = false
     private var horizontalSpeed: CGFloat = 150
@@ -75,7 +83,7 @@ class Player: SKSpriteNode {
     }
     
     func gainHealth() {
-        self.health += 9
+        self.health += 21
     }
     
     func takeDamage(of damage: CGFloat) {
@@ -83,7 +91,7 @@ class Player: SKSpriteNode {
     }
     
     func takeDamage() {
-        self.health -= 11
+        self.health -= 29
     }
     
     func shootBullet() {

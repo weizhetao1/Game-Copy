@@ -18,6 +18,8 @@
 		C54EF24C291B1518004DD785 /* SampleTileSet.sks in Resources */ = {isa = PBXBuildFile; fileRef = C54EF24A291B1518004DD785 /* SampleTileSet.sks */; };
 		C54EF24D291B1518004DD785 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C54EF24B291B1518004DD785 /* Assets.xcassets */; };
 		C54EF293291B1B97004DD785 /* Map1.sks in Resources */ = {isa = PBXBuildFile; fileRef = C54EF292291B1B97004DD785 /* Map1.sks */; };
+		C5532BA7292EDEA300007433 /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5532BA6292EDEA300007433 /* Bullet.swift */; };
+		C5532BAA292EDFFE00007433 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5532BA9292EDFFE00007433 /* Constants.swift */; };
 		C58357C6292508D600A5C0B6 /* MapGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58357C5292508D600A5C0B6 /* MapGenerator.swift */; };
 		C59C7BBC292D9DC200BDB0E7 /* HealthBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59C7BBB292D9DC200BDB0E7 /* HealthBar.swift */; };
 		C59E262129190F2E0091E81E /* SKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59E262029190F2E0091E81E /* SKNode.swift */; };
@@ -58,6 +60,8 @@
 		C54EF24A291B1518004DD785 /* SampleTileSet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = SampleTileSet.sks; sourceTree = "<group>"; };
 		C54EF24B291B1518004DD785 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C54EF292291B1B97004DD785 /* Map1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Map1.sks; sourceTree = "<group>"; };
+		C5532BA6292EDEA300007433 /* Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bullet.swift; sourceTree = "<group>"; };
+		C5532BA9292EDFFE00007433 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C58357C5292508D600A5C0B6 /* MapGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGenerator.swift; sourceTree = "<group>"; };
 		C59C7BBB292D9DC200BDB0E7 /* HealthBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthBar.swift; sourceTree = "<group>"; };
 		C59E262029190F2E0091E81E /* SKNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNode.swift; sourceTree = "<group>"; };
@@ -116,6 +120,7 @@
 			children = (
 				C54EF24E291B1525004DD785 /* Maps */,
 				C54EF245291B13FA004DD785 /* Tile Sets */,
+				C5532BA8292EDFD900007433 /* Constants */,
 				C59E261F29190F1C0091E81E /* Extensions */,
 				C5AB8F8D28D1FB7200787D73 /* Scenes */,
 				C5D674FC28E8379100927904 /* Nodes */,
@@ -170,6 +175,14 @@
 			path = Maps;
 			sourceTree = "<group>";
 		};
+		C5532BA8292EDFD900007433 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				C5532BA9292EDFFE00007433 /* Constants.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
 		C59E261F29190F1C0091E81E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,6 +214,7 @@
 				C59C7BBB292D9DC200BDB0E7 /* HealthBar.swift */,
 				C5C7E05628F62C25002CF643 /* Enemy.swift */,
 				C5D674FD28E8388000927904 /* ButtonNode.swift */,
+				C5532BA6292EDEA300007433 /* Bullet.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -341,10 +355,12 @@
 				C5AB8F8F28D1FBA500787D73 /* GameScene.swift in Sources */,
 				C59C7BBC292D9DC200BDB0E7 /* HealthBar.swift in Sources */,
 				C52F1F1128CF2BE8001B97BD /* ContentView.swift in Sources */,
+				C5532BAA292EDFFE00007433 /* Constants.swift in Sources */,
 				C58357C6292508D600A5C0B6 /* MapGenerator.swift in Sources */,
 				C5C7E05728F62C25002CF643 /* Enemy.swift in Sources */,
 				C59E262129190F2E0091E81E /* SKNode.swift in Sources */,
 				C52F1F0F28CF2BE8001B97BD /* GameApp.swift in Sources */,
+				C5532BA7292EDEA300007433 /* Bullet.swift in Sources */,
 				C5417A73290FDA84007BE863 /* Player.swift in Sources */,
 				C5D674FE28E8388000927904 /* ButtonNode.swift in Sources */,
 			);

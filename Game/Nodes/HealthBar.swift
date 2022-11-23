@@ -53,7 +53,7 @@ class HealthBar: SKSpriteNode {
     
     private func initiateBorder() {
         let border = SKShapeNode(rect: CGRect(x: 0, y: 0, width: maxWidth, height: self.size.height))
-        border.position = CGPoint(x: -maxWidth / 2, y: -self.size.height / 2)
+        border.position = CGPoint(x: -maxWidth / 2, y: -self.size.height / 2) //position the border
         border.fillColor = .clear
         border.strokeColor = .black
         border.lineWidth = 4
