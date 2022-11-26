@@ -9,5 +9,5 @@ import Foundation
 import SpriteKit
 
 enum BulletTexture {
-    static let bulletBlue = SKTexture(imageNamed: "bulletBlue")
+    static let bulletBlue = SKTexture(imageNamed: "BulletBlue")
 }

@@ -22,7 +22,7 @@ class Player: SKSpriteNode {
     var maxHealth: CGFloat = 150
     private var doubleJumpUsed: Bool = false
     private var horizontalSpeed: CGFloat = 150
-    private var jumpImpulse: CGFloat = 10000
+    private var jumpImpulse: CGFloat = 8000
     var inAir: Bool = false {
         didSet {
             if inAir == false {
@@ -51,10 +51,6 @@ class Player: SKSpriteNode {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func removeFromParent() {
-        super.removeFromParent()
     }
     
     func moveLeft() {
@@ -95,20 +91,11 @@ class Player: SKSpriteNode {
     }
     
     func shootBullet() {
-        guard let parent = self.parent else { return } //make sure player has a parent (normally GameScene)
-        let bullet = SKShapeNode(circleOfRadius: 4.0)
-        bullet.fillColor = UIColor.red
-        bullet.position = CGPoint(x: self.position.x, y: self.position.y) //Set bullet position to the player position
-        bullet.zPosition = 0
-        bullet.physicsBody = SKPhysicsBody(circleOfRadius: 4.0)
-        bullet.physicsBody?.velocity = velocityTowards(node: findClosestEnemy(), speed: 200) //Giving initial velocity
-        bullet.physicsBody?.collisionBitMask = 0
-        bullet.physicsBody?.contactTestBitMask = 1
-        bullet.physicsBody?.affectedByGravity = false //Bullet not falling
-        bullet.physicsBody?.linearDamping = 0 //Stops the bullet from stopping mid air
-        bullet.name = "bullet"
+        guard let scene = self.scene else { return } //make sure player has a scene (normally GameScene)
+        let closestEnemy = findClosestEnemy()
+        let bullet = Bullet(position: self.position, towards: closestEnemy, speed: 200)
         
-        parent.addChild(bullet)
+        scene.addChild(bullet)
     }
     
     private func findClosestEnemy() -> SKNode? {
@@ -126,11 +113,4 @@ class Player: SKSpriteNode {
         return closestNode
     }
     
-    private func velocityTowards(node: SKNode?, speed: CGFloat) -> CGVector {
-        guard let node = node else {
-            return CGVector(dx: speed, dy: 0) //A default velocity if there is no closest enemy
-        }
-        let timeNeeded = self.distanceTo(node: node) / speed
-        return CGVector(dx: (node.position.x - self.position.x) / timeNeeded, dy: (node.position.y - self.position.y) / timeNeeded)
-    }
 }

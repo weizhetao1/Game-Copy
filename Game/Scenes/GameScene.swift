@@ -27,7 +27,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func setUpBackground() {
-        backgroundColor = UIColor.cyan
+        backgroundColor = UIColor.white
         cameraNode.position = CGPoint(x: size.width / 2 , y: size.width / 2)
         self.camera = cameraNode
         cameraNode.xScale = 3
