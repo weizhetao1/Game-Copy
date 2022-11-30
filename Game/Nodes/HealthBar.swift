@@ -19,6 +19,7 @@ class HealthBar: SKSpriteNode {
         self.player = playerObject
         healthText = SKLabelNode()
         super.init(texture: SKTexture(imageNamed: "Green"), color: UIColor.green, size: CGSize()) //initialize with empty size and texture
+        player?.healthBar = self
         self.size = CGSize(width: maxWidth, height: 40)
         self.position = CGPoint(x: screenSize.width * -0.45, y: screenSize.height * 0.47 - self.size.height) //set position
         self.anchorPoint = CGPoint(x: 0, y: 0)
@@ -60,7 +61,7 @@ class HealthBar: SKSpriteNode {
         healthText.addChild(border)
     }
     
-    func updateHealthBar() {
+    func update() {
         guard let player = player else { return }
         self.size = CGSize(width: maxWidth * player.health / player.maxHealth, height: self.size.height)
         updateLabelNode()

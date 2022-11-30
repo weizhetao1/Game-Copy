@@ -12,7 +12,7 @@ import GameplayKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var player: Player! //There must be a player node, whether dead or alive
-    private var healthBar: HealthBar! //initiate health bar
+    var healthBar: HealthBar! //initiate health bar
     private var cameraNode = SKCameraNode()
     private var leftTouched: Bool = false
     private var rightTouched: Bool = false
@@ -42,8 +42,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func setUpPlayer() {
-        player = Player(position: CGPoint(x: size.width * 0.25, y: size.height * 0.5), zPosition: 1,
-                        collisionBitmask: 1, contactTestBitmask: 2)
+        player = Player(position: CGPoint(x: size.width * 0.25, y: size.height * 0.5), zPosition: 1)
         
         addChild(player)
     }
@@ -51,7 +50,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func setUpEnemy() {
         for i in 0...5 {
             let enemy = Enemy(imageNamed: "Stickman", position: CGPoint(x: size.width * 0.5+0.05*CGFloat(i), y: size.height * 0.5),
-                              zPosition: 0, name: "enemy", collisionBitmask: 1, contactTestBitmask: 1, health: 100)
+                              zPosition: 0, name: "enemy", health: 100)
             enemy.scale(to: CGSize(width: 92, height: 92))
             addChild(enemy)
         }
@@ -98,12 +97,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         updateCameraPosition()
-        
-        healthBar.updateHealthBar() //update health bar
+        updateEnemies()
     }
     
     private func updateCameraPosition() {
         cameraNode.position = player.position //set camera position to player position
+    }
+    
+    private func updateEnemies() {
+        self.enumerateChildNodes(withName: "enemy") {
+            node, _ in //Iterates through list of enemies
+            if let enemy = node as? Enemy { //make sure that they are of type Enemy
+                enemy.update()
+            }
+        }
     }
     
     private func destroy(node: SKNode?) {
@@ -116,25 +123,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         return false
     }
+    
+    private func bulletContactTest(contact: SKPhysicsContact, nodeA: SKNode, nodeB: SKNode) -> (bullet: Bullet, otherNode: SKNode)? {
+        //return (the bullet node, the other node) if bullet is involved, otherwide nil. (ordered with casted type)
+        if contact.bodyA.categoryBitMask == PhysicsCategory.bullet {
+            if let bullet = nodeA as? Bullet { //make sure it is of type bullet
+                return (bullet, nodeB)
+            }
+        } else if contact.bodyB.categoryBitMask == PhysicsCategory.bullet {
+            if let bullet = nodeB as? Bullet { //make sure it is of type bullet
+                return (bullet, nodeA)
+            }
+        return nil
+    }
 
     func didBegin(_ contact: SKPhysicsContact) {
         guard let nodeA = contact.bodyA.node else { return }
         guard let nodeB = contact.bodyB.node else { return } //make sure 2 nodes exist for the contact
-        if inContact(contact: contact, "bullet", "enemy") {
-            self.enumerateChildNodes(withName: "enemy") {
-                node, _ in //Iterates through list of enemies
-                if let enemy = node as? Enemy { //make sure that they are of type Enemy
-                    if nodeA.isEqual(to: enemy) || nodeB.isEqual(to: enemy) {
-                        enemy.takeDamage(of: 10) //let enemy take damage if involved in the collision
-                        return
-                    }
-                }
+        let bulletContact = bulletContactTest(contact: contact, nodeA: nodeA, nodeB: nodeB)
+        if bulletContact != nil {
+            if let enemy = bulletContact?.otherNode as? Enemy { //if that they are of type Enemy
+                enemy.takeDamage(of: 10) //let enemy take damage if involved in the collision
+                return
+            } else if let player = bulletContact?.otherNode as? Player { //if that they are of type Player
+                player.takeDamage(of: 10) //let player take damage if involved in the collision
+                return
             }
-            if nodeA.name == "bullet" {
-                destroy(node: nodeA)
-            } else if nodeB.name == "bullet" {
-                destroy(node: nodeB)
-            }
+            destroy(node: bulletContact?.bullet)
         } else if inContact(contact: contact, "player", "ground") {
             player.inAir = false
         }

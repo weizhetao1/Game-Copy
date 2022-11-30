@@ -18,8 +18,7 @@ class Enemy: SKSpriteNode {
         }
     }
     
-    init(imageNamed: String, position: CGPoint, zPosition: CGFloat, name: String,
-         collisionBitmask: UInt32, contactTestBitmask: UInt32, health: Int) {
+    init(imageNamed: String, position: CGPoint, zPosition: CGFloat, name: String, health: Int) {
         self.health = health
         let texture = SKTexture(imageNamed: imageNamed)
         super.init(texture: texture, color: .clear, size: texture.size())
@@ -27,8 +26,9 @@ class Enemy: SKSpriteNode {
         self.zPosition = zPosition
         self.name = name
         self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width / 2)
-        self.physicsBody?.contactTestBitMask = contactTestBitmask
-        self.physicsBody?.collisionBitMask = collisionBitmask
+        self.physicsBody?.categoryBitMask = PhysicsCategory.enemy
+        self.physicsBody?.contactTestBitMask = 0
+        self.physicsBody?.collisionBitMask = PhysicsCategory.platform | PhysicsCategory.wall | PhysicsCategory.player | PhysicsCategory.ground
         self.physicsBody?.allowsRotation = false
     }
     
@@ -43,15 +43,15 @@ class Enemy: SKSpriteNode {
     func shootBullet() {
         guard let scene = self.scene else { return } //make sure enemy has a scene (normally GameScene)
         guard let player = scene.childNode(withName: "player") else { return } //make sure there is a player in scene to shoot bullet at
-        let bullet = Bullet(position: self.position, towards: player, speed: 200)
+        let bullet = Bullet(position: self.position, towards: player, speed: 200, contactTestBitMask: PhysicsCategory.player)
         
         scene.addChild(bullet)
     }
     
-    func actionEveryFrame() {
+    func update() {
         let randomInteger = Int.random(in: 0..<100)
         if randomInteger == 1 {
-            self.shootBullet()
+            self.shootBullet() //1% chance every frame to shoot a bullet
         }
     }
     

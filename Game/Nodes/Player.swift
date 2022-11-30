@@ -17,6 +17,7 @@ class Player: SKSpriteNode {
             } else if health > maxHealth {
                 health = maxHealth //limit to max health
             }
+            healthBar?.update()
         }
     }
     var maxHealth: CGFloat = 150
@@ -30,21 +31,22 @@ class Player: SKSpriteNode {
             }
         }
     }
+    weak var healthBar: HealthBar?
     
-    init(position: CGPoint, zPosition: CGFloat, collisionBitmask: UInt32, contactTestBitmask: UInt32) {
+    init(position: CGPoint, zPosition: CGFloat) {
         let texture = SKTexture(imageNamed: "Stickman")
         super.init(texture: texture, color: .clear, size: texture.size())
         self.position = position
         self.zPosition = zPosition
         self.name = "player"
         self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width / 2)
-        self.physicsBody?.contactTestBitMask = contactTestBitmask
-        self.physicsBody?.collisionBitMask = collisionBitmask
+        self.physicsBody?.categoryBitMask = PhysicsCategory.player
+        self.physicsBody?.contactTestBitMask = PhysicsCategory.platform | PhysicsCategory.ground //combines categories
+        self.physicsBody?.collisionBitMask = PhysicsCategory.platform | PhysicsCategory.wall | PhysicsCategory.enemy | PhysicsCategory.ground
         self.physicsBody?.linearDamping = 0
         self.physicsBody?.friction = 0.6
         self.physicsBody?.mass = 10
         self.physicsBody?.restitution = 0
-        self.physicsBody?.categoryBitMask = 1
         self.physicsBody?.allowsRotation = false
         self.scale(to: CGSize(width: 128, height: 128))
     }
@@ -93,7 +95,7 @@ class Player: SKSpriteNode {
     func shootBullet() {
         guard let scene = self.scene else { return } //make sure player has a scene (normally GameScene)
         let closestEnemy = findClosestEnemy()
-        let bullet = Bullet(position: self.position, towards: closestEnemy, speed: 200)
+        let bullet = Bullet(position: self.position, towards: closestEnemy, speed: 200, contactTestBitMask: PhysicsCategory.enemy)
         
         scene.addChild(bullet)
     }
