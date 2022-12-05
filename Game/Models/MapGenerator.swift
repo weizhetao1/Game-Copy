@@ -30,16 +30,19 @@ class MapGenerator {
             for row in 0..<tileMap.numberOfRows {
                 if let tileDefinition = tileMap.tileDefinition(atColumn: column, row: row) { //if there is a tile filled at this location
                     var nodeName = ""
+                    var categoryBitMask: UInt32 = 0
                     if tileDefinition.name?.contains("Grass") ?? false {
                         nodeName = "ground"
+                        categoryBitMask = PhysicsCategory.ground
                     } else if tileDefinition.name?.contains("Cobblestone") ?? false {
                         nodeName = "wall"
+                        categoryBitMask = PhysicsCategory.wall
                     }
-                    let tileNode = SKSpriteNode(color: UIColor.red, size: tileSize)
+                    let tileNode = SKSpriteNode(color: UIColor.clear, size: tileSize)
                     tileNode.position = tileMap.centerOfTile(atColumn: column, row: row) //set tile position
                     tileNode.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
                     tileNode.physicsBody?.isDynamic = false //these map tile nodes don't move
-                    tileNode.physicsBody?.contactTestBitMask = 2 //testing for contact for double jump purposes
+                    tileNode.physicsBody?.categoryBitMask = categoryBitMask //testing for contact for double jump purposes
                     tileNode.physicsBody?.friction = 0.2 //provides friction for player to stop moving
                     tileNode.physicsBody?.restitution = 0 //no bouncing
                     tileNode.name = nodeName

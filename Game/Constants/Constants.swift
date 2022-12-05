@@ -20,3 +20,7 @@ enum PhysicsCategory {
     static let platform: UInt32 = 1 << 4
     static let bullet: UInt32 = 1 << 5
 }
+
+enum SceneInfo {
+    static var size: CGSize = CGSize()
+}

@@ -12,6 +12,13 @@ enum ButtonNodeState {
     case active, selected
 }
 
+enum ButtonType: String {
+    case moveLeft = "MoveLeft"
+    case moveRight = "MoveRight"
+    case jump = "Jump"
+    case attack = "Attack"
+}
+
 class ButtonNode: SKShapeNode {
     
     private var action: () -> Void = {} //Empty function for error at super.init, doesn't change functionality
@@ -33,17 +40,34 @@ class ButtonNode: SKShapeNode {
         super.init()
     }
     
-    convenience init(position: CGPoint, name: String, action: @escaping () -> Void, endAction: @escaping () -> Void = {}) {
+    convenience init(type: ButtonType, action: @escaping () -> Void, endAction: @escaping () -> Void = {}) {
         // No need to specify endAction if not wanted. Will be an empty closure by default
         self.init()
         self.init(circleOfRadius: 20)
         self.fillColor = UIColor(white: 0.5, alpha: 0.3)
-        self.position = position
+        self.position = buttonPosition(of: type)
         self.zPosition = 10
-        self.name = name
         self.action = action
         self.endAction = endAction
         self.isUserInteractionEnabled = true
+        
+    }
+    
+    private func buttonPosition(of type: ButtonType) -> CGPoint {
+        switch type {
+        case .moveLeft:
+            return CGPoint(x: SceneInfo.size.width * -0.37, y: SceneInfo.size.height * -0.25)
+        case .moveRight:
+            return CGPoint(x: SceneInfo.size.width * -0.29, y: SceneInfo.size.height * -0.25)
+        case .jump:
+            return CGPoint(x: SceneInfo.size.width * 0.28, y: SceneInfo.size.height * -0.20)
+        case .attack:
+            return CGPoint(x: SceneInfo.size.width * 0.35, y: SceneInfo.size.height * -0.25)
+        }
+    }
+    
+    private func attachImage(of type: ButtonType) {
+        let imageName = type.rawValue
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -18,6 +18,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var rightTouched: Bool = false
     
     override func didMove(to view: SKView) {
+        SceneInfo.size = self.size
         setUpPhysics()
         setUpPlayer()
         setUpEnemy()
@@ -43,13 +44,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func setUpPlayer() {
         player = Player(position: CGPoint(x: size.width * 0.25, y: size.height * 0.5), zPosition: 1)
-        
         addChild(player)
     }
     
     private func setUpEnemy() {
         for i in 0...5 {
-            let enemy = Enemy(imageNamed: "Stickman", position: CGPoint(x: size.width * 0.5+0.05*CGFloat(i), y: size.height * 0.5),
+            let enemy = Enemy(imageNamed: "Stickman", position: CGPoint(x: size.width * (0.5+0.1*CGFloat(i)), y: size.height * 0.5),
                               zPosition: 0, name: "enemy", health: 100)
             enemy.scale(to: CGSize(width: 92, height: 92))
             addChild(enemy)
@@ -63,25 +63,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func setUpUI() {
-        let fireButton = ButtonNode(position: CGPoint(x: size.width * 0.35, y: size.height * -0.25), name: "fireButton", action: player.shootBullet)
-        let buttonLeft = ButtonNode(position: CGPoint(x: size.width * -0.37, y: size.height * -0.25), name: "leftButton",
-                                    action: { self.leftTouched = true },
-                                    endAction: { self.leftTouched = false })
-        let buttonRight = ButtonNode(position: CGPoint(x: size.width * -0.29, y: size.height * -0.25), name: "rightButton",
-                                     action: { self.rightTouched = true },
-                                     endAction: { self.rightTouched = false })
-        let jumpButton = ButtonNode(position: CGPoint(x: size.width * 0.28, y: size.height * -0.20), name: "jumpButton", action: player.jump)
+        let fireButton = ButtonNode(type: .attack, action: player.shootBullet)
+        let buttonLeft = ButtonNode(type: .moveLeft, action: { self.leftTouched = true }, endAction: { self.leftTouched = false })
+        let buttonRight = ButtonNode(type: .moveRight, action: { self.rightTouched = true }, endAction: { self.rightTouched = false })
+        let jumpButton = ButtonNode(type: .jump, action: player.jump)
         
         cameraNode.addChild(fireButton)
         cameraNode.addChild(jumpButton)
         cameraNode.addChild(buttonLeft)
         cameraNode.addChild(buttonRight)
-        
-        let testButton1 = ButtonNode(position: CGPoint(x: size.width * -0.05, y: size.height * -0.20), name: "gainHealth", action: player.gainHealth)
-        let testButton2 = ButtonNode(position: CGPoint(x: size.width * 0.05, y: size.height * -0.20), name: "loseHealth", action: player.takeDamage)
-        
-        cameraNode.addChild(testButton1)
-        cameraNode.addChild(testButton2)
         
         healthBar = HealthBar(screenSize: self.size, playerObject: player)
         cameraNode.addChild(healthBar) //add to UI layer (camera node)
@@ -134,6 +124,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if let bullet = nodeB as? Bullet { //make sure it is of type bullet
                 return (bullet, nodeA)
             }
+        }
         return nil
     }
 
@@ -144,15 +135,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if bulletContact != nil {
             if let enemy = bulletContact?.otherNode as? Enemy { //if that they are of type Enemy
                 enemy.takeDamage(of: 10) //let enemy take damage if involved in the collision
-                return
             } else if let player = bulletContact?.otherNode as? Player { //if that they are of type Player
                 player.takeDamage(of: 10) //let player take damage if involved in the collision
-                return
             }
             destroy(node: bulletContact?.bullet)
+            return
         } else if inContact(contact: contact, "player", "ground") {
             player.inAir = false
         }
     }
 }
-
