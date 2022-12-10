@@ -42,6 +42,7 @@ class HealthBar: SKSpriteNode {
         healthText.verticalAlignmentMode = SKLabelVerticalAlignmentMode.center //align on the center
         healthText.fontSize = self.size.height / 2
         healthText.position = CGPoint(x: self.maxWidth / 2, y: self.size.height / 2)
+        healthText.fontColor = .black
         self.addChild(healthText)
     }
     

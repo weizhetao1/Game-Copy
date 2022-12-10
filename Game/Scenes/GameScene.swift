@@ -136,7 +136,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if let enemy = bulletContact?.otherNode as? Enemy { //if that they are of type Enemy
                 enemy.takeDamage(of: 10) //let enemy take damage if involved in the collision
             } else if let player = bulletContact?.otherNode as? Player { //if that they are of type Player
-                player.takeDamage(of: 10) //let player take damage if involved in the collision
+                player.takeDamage(of: 1) //let player take damage if involved in the collision
             }
             destroy(node: bulletContact?.bullet)
             return

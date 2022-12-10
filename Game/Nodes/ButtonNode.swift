@@ -44,13 +44,13 @@ class ButtonNode: SKShapeNode {
         // No need to specify endAction if not wanted. Will be an empty closure by default
         self.init()
         self.init(circleOfRadius: 20)
-        self.fillColor = UIColor(white: 0.5, alpha: 0.3)
+        self.fillColor = UIColor(white: 0.5, alpha: 0.9)
         self.position = buttonPosition(of: type)
         self.zPosition = 10
         self.action = action
         self.endAction = endAction
         self.isUserInteractionEnabled = true
-        
+        attachImage(of: type)
     }
     
     private func buttonPosition(of type: ButtonType) -> CGPoint {
@@ -68,6 +68,7 @@ class ButtonNode: SKShapeNode {
     
     private func attachImage(of type: ButtonType) {
         let imageName = type.rawValue
+        self.fillTexture = SKTexture(imageNamed: imageName)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -82,7 +83,9 @@ class ButtonNode: SKShapeNode {
         guard let parent = self.parent else { return }
         for touch in touches {
             let location = touch.location(in: parent)
-            if !self.frame.contains(location) {
+            if self.frame.contains(location) {
+                state = .selected //sets button state if moved to the button.
+            } else {
                 state = .active //resets the button state if touch leaves the frame of the button node.
             }
         }
