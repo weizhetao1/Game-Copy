@@ -13,10 +13,12 @@ enum ButtonNodeState {
 }
 
 enum ButtonType: String {
+    //raw values are image names
     case moveLeft = "MoveLeft"
     case moveRight = "MoveRight"
     case jump = "Jump"
-    case attack = "Attack"
+    case rangedAttack = "RangedAttack"
+    case meleeAttack = "MeleeAttack"
 }
 
 class ButtonNode: SKShapeNode {
@@ -61,8 +63,10 @@ class ButtonNode: SKShapeNode {
             return CGPoint(x: SceneInfo.size.width * -0.29, y: SceneInfo.size.height * -0.25)
         case .jump:
             return CGPoint(x: SceneInfo.size.width * 0.28, y: SceneInfo.size.height * -0.20)
-        case .attack:
+        case .rangedAttack:
             return CGPoint(x: SceneInfo.size.width * 0.35, y: SceneInfo.size.height * -0.25)
+        case .meleeAttack:
+            return CGPoint(x: SceneInfo.size.width * 0.39, y: SceneInfo.size.height * -0.25)
         }
     }
     

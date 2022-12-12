@@ -43,7 +43,7 @@ class Enemy: SKSpriteNode {
     func shootBullet() {
         guard let scene = self.scene else { return } //make sure enemy has a scene (normally GameScene)
         guard let player = scene.childNode(withName: "player") else { return } //make sure there is a player in scene to shoot bullet at
-        let bullet = Bullet(position: self.position, towards: player, speed: 200, contactTestBitMask: PhysicsCategory.player)
+        let bullet = Bullet(position: self.position, towards: player, speed: 200, targetTestBitMask: PhysicsCategory.player)
         
         scene.addChild(bullet)
     }

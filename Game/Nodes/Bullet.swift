@@ -10,7 +10,7 @@ import SpriteKit
 
 class Bullet: SKSpriteNode {
     
-    init(position: CGPoint, towards node: SKNode?, speed: CGFloat, contactTestBitMask: UInt32) {
+    init(position: CGPoint, towards node: SKNode?, speed: CGFloat, targetTestBitMask: UInt32) {
         let texture = BulletTexture.bulletBlue
         super.init(texture: texture, color: .clear, size: texture.size())
         self.position = position
@@ -20,7 +20,7 @@ class Bullet: SKSpriteNode {
         self.physicsBody?.velocity = velocityTowards(node: node, speed: speed)
         self.physicsBody?.categoryBitMask = PhysicsCategory.bullet
         self.physicsBody?.collisionBitMask = 0 //doesn't collide with anything
-        self.physicsBody?.contactTestBitMask = contactTestBitMask //set to the parameter
+        self.physicsBody?.contactTestBitMask = targetTestBitMask | PhysicsCategory.platform | PhysicsCategory.wall | PhysicsCategory.ground //set to the parameter, and it should disappear when hitting walls
         self.physicsBody?.affectedByGravity = false //Bullet not falling
         self.physicsBody?.linearDamping = 0 //Stops the bullet from stopping mid air
         self.name = "bullet"

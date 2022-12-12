@@ -63,15 +63,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func setUpUI() {
-        let fireButton = ButtonNode(type: .attack, action: player.shootBullet)
+        let fireButton = ButtonNode(type: .rangedAttack, action: player.shootBullet)
         let buttonLeft = ButtonNode(type: .moveLeft, action: { self.leftTouched = true }, endAction: { self.leftTouched = false })
         let buttonRight = ButtonNode(type: .moveRight, action: { self.rightTouched = true }, endAction: { self.rightTouched = false })
         let jumpButton = ButtonNode(type: .jump, action: player.jump)
+        let meleeButton = ButtonNode(type: .meleeAttack, action: player.meleeAttack)
         
         cameraNode.addChild(fireButton)
         cameraNode.addChild(jumpButton)
         cameraNode.addChild(buttonLeft)
         cameraNode.addChild(buttonRight)
+        cameraNode.addChild(meleeButton)
         
         healthBar = HealthBar(screenSize: self.size, playerObject: player)
         cameraNode.addChild(healthBar) //add to UI layer (camera node)

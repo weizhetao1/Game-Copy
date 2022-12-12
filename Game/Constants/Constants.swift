@@ -19,6 +19,7 @@ enum PhysicsCategory {
     static let enemy: UInt32 = 1 << 3
     static let platform: UInt32 = 1 << 4
     static let bullet: UInt32 = 1 << 5
+    static let sword: UInt32 = 1 << 6
 }
 
 enum SceneInfo {

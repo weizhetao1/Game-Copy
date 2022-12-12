@@ -20,6 +20,7 @@
 		C54EF293291B1B97004DD785 /* Map1.sks in Resources */ = {isa = PBXBuildFile; fileRef = C54EF292291B1B97004DD785 /* Map1.sks */; };
 		C5532BA7292EDEA300007433 /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5532BA6292EDEA300007433 /* Bullet.swift */; };
 		C5532BAA292EDFFE00007433 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5532BA9292EDFFE00007433 /* Constants.swift */; };
+		C56C88972947383A00AA2092 /* MeleeWeapon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56C88962947383A00AA2092 /* MeleeWeapon.swift */; };
 		C58357C6292508D600A5C0B6 /* MapGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58357C5292508D600A5C0B6 /* MapGenerator.swift */; };
 		C59C7BBC292D9DC200BDB0E7 /* HealthBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59C7BBB292D9DC200BDB0E7 /* HealthBar.swift */; };
 		C59E262129190F2E0091E81E /* SKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59E262029190F2E0091E81E /* SKNode.swift */; };
@@ -62,6 +63,7 @@
 		C54EF292291B1B97004DD785 /* Map1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Map1.sks; sourceTree = "<group>"; };
 		C5532BA6292EDEA300007433 /* Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bullet.swift; sourceTree = "<group>"; };
 		C5532BA9292EDFFE00007433 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		C56C88962947383A00AA2092 /* MeleeWeapon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeleeWeapon.swift; sourceTree = "<group>"; };
 		C58357C5292508D600A5C0B6 /* MapGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGenerator.swift; sourceTree = "<group>"; };
 		C59C7BBB292D9DC200BDB0E7 /* HealthBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthBar.swift; sourceTree = "<group>"; };
 		C59E262029190F2E0091E81E /* SKNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNode.swift; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 				C5C7E05628F62C25002CF643 /* Enemy.swift */,
 				C5D674FD28E8388000927904 /* ButtonNode.swift */,
 				C5532BA6292EDEA300007433 /* Bullet.swift */,
+				C56C88962947383A00AA2092 /* MeleeWeapon.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 				C52F1F0F28CF2BE8001B97BD /* GameApp.swift in Sources */,
 				C5532BA7292EDEA300007433 /* Bullet.swift in Sources */,
 				C5417A73290FDA84007BE863 /* Player.swift in Sources */,
+				C56C88972947383A00AA2092 /* MeleeWeapon.swift in Sources */,
 				C5D674FE28E8388000927904 /* ButtonNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

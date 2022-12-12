@@ -8,6 +8,10 @@
 import Foundation
 import SpriteKit
 
+enum playerFacing {
+    case left, right
+}
+
 class Player: SKSpriteNode {
     
     var health: CGFloat = 100 {
@@ -21,8 +25,9 @@ class Player: SKSpriteNode {
         }
     }
     var maxHealth: CGFloat = 150
+    var facing: playerFacing = .right
+    private var horizontalMoveSpeed: CGFloat = 150
     private var doubleJumpUsed: Bool = false
-    private var horizontalSpeed: CGFloat = 150
     private var jumpImpulse: CGFloat = 8000
     var inAir: Bool = false {
         didSet {
@@ -31,6 +36,7 @@ class Player: SKSpriteNode {
             }
         }
     }
+    private var meleeWeapon: MeleeWeapon?
     weak var healthBar: HealthBar?
     
     init(position: CGPoint, zPosition: CGFloat) {
@@ -49,20 +55,29 @@ class Player: SKSpriteNode {
         self.physicsBody?.restitution = 0
         self.physicsBody?.allowsRotation = false
         self.scale(to: CGSize(width: 128, height: 128))
+        attachMeleeWeapon()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func attachMeleeWeapon() {
+        let sword = MeleeWeapon()
+        self.meleeWeapon = sword
+        self.addChild(sword)
+    }
+    
     func moveLeft() {
         guard let velocity = self.physicsBody?.velocity else { return }
-        self.physicsBody?.velocity = CGVector(dx: -horizontalSpeed, dy: velocity.dy)
+        self.physicsBody?.velocity = CGVector(dx: -horizontalMoveSpeed, dy: velocity.dy) //doesn't change vertical speed
+        facing = .left
     }
     
     func moveRight() {
         guard let velocity = self.physicsBody?.velocity else { return }
-        self.physicsBody?.velocity = CGVector(dx: horizontalSpeed, dy: velocity.dy)
+        self.physicsBody?.velocity = CGVector(dx: horizontalMoveSpeed, dy: velocity.dy) //doesn't change vertical speed
+        facing = .right
     }
     
     func jump() {
@@ -79,30 +94,27 @@ class Player: SKSpriteNode {
     func gainHealth(of gain: CGFloat) {
         self.health += gain
     }
-    
-    func gainHealth() {
-        self.health += 21
-    }
-    
+
     func takeDamage(of damage: CGFloat) {
         self.health -= damage
-    }
-    
-    func takeDamage() {
-        self.health -= 29
     }
     
     func shootBullet() {
         guard let scene = self.scene else { return } //make sure player has a scene (normally GameScene)
         let closestEnemy = findClosestEnemy()
-        let bullet = Bullet(position: self.position, towards: closestEnemy, speed: 200, contactTestBitMask: PhysicsCategory.enemy)
+        let bullet = Bullet(position: self.position, towards: closestEnemy, speed: 200, targetTestBitMask: PhysicsCategory.enemy)
         
         scene.addChild(bullet)
     }
     
+    func meleeAttack() {
+        guard let meleeWeapon = meleeWeapon else { return }
+        meleeWeapon.attack()
+    }
+    
     private func findClosestEnemy() -> SKNode? {
         guard let parent = self.parent else { return nil } //return if player doesn't have a parent
-        var closestNode: SKNode? //might not be one so optional
+        var closestNode: SKNode? //might not be one, so optional
         var closestDistance = CGFloat.infinity
         parent.enumerateChildNodes(withName: "enemy") {
             node, _ in
