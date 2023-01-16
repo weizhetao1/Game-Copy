@@ -8,7 +8,7 @@
 import Foundation
 import SpriteKit
 
-enum playerFacing {
+enum PlayerFacing: Int {
     case left, right
 }
 
@@ -25,7 +25,7 @@ class Player: SKSpriteNode {
         }
     }
     var maxHealth: CGFloat = 150
-    var facing: playerFacing = .right
+    var facing: PlayerFacing = .right
     private var horizontalMoveSpeed: CGFloat = 150
     private var doubleJumpUsed: Bool = false
     private var jumpImpulse: CGFloat = 8000
@@ -64,6 +64,7 @@ class Player: SKSpriteNode {
     
     private func attachMeleeWeapon() {
         let sword = MeleeWeapon()
+        sword.player = self
         self.meleeWeapon = sword
         self.addChild(sword)
     }

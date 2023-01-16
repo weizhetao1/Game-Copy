@@ -14,22 +14,28 @@ enum MeleeWeaponType {
 
 class MeleeWeapon: SKSpriteNode {
     
+    var facing: PlayerFacing? = .right {
+        didSet {
+            
+        }
+    }
     //The following are actions used when attacking, initialised here so they can be reused
-    private let attackRotate = SKAction.rotate(byAngle: -CGFloat.pi / 2, duration: 0.2)
+    private var attackRotate = SKAction.rotate(byAngle: -CGFloat.pi / 2, duration: 0.2)
     private let attackWait = SKAction.wait(forDuration: 0.1)
-    private let reverseAttack = SKAction.rotate(byAngle: CGFloat.pi / 2, duration: 0.03)
+    private var reverseAttack = SKAction.rotate(toAngle: CGFloat.zero, duration: 0.03, shortestUnitArc: true)
     
     init() {
         let texture = SKTexture(imageNamed: "Sword") //load texture
         super.init(texture: texture, color: .clear, size: texture.size())
         self.physicsBody = SKPhysicsBody(texture: self.texture!, size: self.texture!.size()) //physics body based on the sword
-        self.anchorPoint = CGPoint(x: 0, y: 0) //set anchorpoint on bottom left
         self.physicsBody?.categoryBitMask = PhysicsCategory.sword
         self.physicsBody?.contactTestBitMask = 0 //doesn't contact initially
         self.physicsBody?.collisionBitMask = 0 //doesn't collide
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.pinned = true //pinned to the player
-        self.scale(to: CGSize(width: 2000, height: 2000)) //scale to appropriate size
+        self.physicsBody?.angularDamping = 0 //no angular damping
+        self.physicsBody?.allowsRotation = false //no rotation to start with
+        self.scale(to: CGSize(width: 1000, height: 1000)) //scale to appropriate size
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -38,9 +44,13 @@ class MeleeWeapon: SKSpriteNode {
     
     func attack() {
         self.physicsBody?.contactTestBitMask = PhysicsCategory.enemy //contact test with enemy during attack
+        self.physicsBody?.allowsRotation = true //allows to rotate when attacking
         self.run(attackRotate) {
             self.physicsBody?.contactTestBitMask = 0 //stops testing with enemy as attack has stopped
-            self.run(SKAction.sequence([self.attackWait, self.reverseAttack])) //wait then reverse the attack
+            self.run(SKAction.sequence([self.attackWait, self.reverseAttack])) { //wait then reverse the attack
+                self.physicsBody?.angularVelocity = 0 //stops any angular velocity
+                self.physicsBody?.allowsRotation = false //stops rotating
+            }
         }
     }
     
