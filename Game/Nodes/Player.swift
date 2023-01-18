@@ -25,7 +25,16 @@ class Player: SKSpriteNode {
         }
     }
     var maxHealth: CGFloat = 150
-    var facing: PlayerFacing = .right
+    var facing: PlayerFacing = .right {
+        didSet {
+            switch facing {
+            case .right:
+                self.meleeWeapon?.facing = .right
+            case .left:
+                self.meleeWeapon?.facing = .left
+            }
+        }
+    }
     private var horizontalMoveSpeed: CGFloat = 150
     private var doubleJumpUsed: Bool = false
     private var jumpImpulse: CGFloat = 8000
@@ -64,7 +73,6 @@ class Player: SKSpriteNode {
     
     private func attachMeleeWeapon() {
         let sword = MeleeWeapon()
-        sword.player = self
         self.meleeWeapon = sword
         self.addChild(sword)
     }

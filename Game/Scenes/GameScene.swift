@@ -21,9 +21,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         SceneInfo.size = self.size
         setUpPhysics()
         setUpPlayer()
-        setUpEnemy()
         setUpBackground()
         setUpMap()
+        setUpEnemy()
         setUpUI()
     }
     
@@ -129,21 +129,52 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         return nil
     }
+    
+    private func meleeContactTest(contact: SKPhysicsContact, nodeA: SKNode, nodeB: SKNode) -> (meleeWeapon: MeleeWeapon, otherNode: SKNode)? {
+        //return (the melee weapon node, the other node) if melee weapon is involved, otherwide nil. (return is ordered with casted type)
+        if contact.bodyA.categoryBitMask == PhysicsCategory.sword {
+            if let meleeWeapon = nodeA as? MeleeWeapon { //make sure it is of type bullet
+                return (meleeWeapon, nodeB)
+            }
+        } else if contact.bodyB.categoryBitMask == PhysicsCategory.sword {
+            if let meleeWeapon = nodeB as? MeleeWeapon { //make sure it is of type bullet
+                return (meleeWeapon, nodeA)
+            }
+        }
+        return nil
+    }
 
     func didBegin(_ contact: SKPhysicsContact) {
         guard let nodeA = contact.bodyA.node else { return }
         guard let nodeB = contact.bodyB.node else { return } //make sure 2 nodes exist for the contact
-        let bulletContact = bulletContactTest(contact: contact, nodeA: nodeA, nodeB: nodeB)
-        if bulletContact != nil {
-            if let enemy = bulletContact?.otherNode as? Enemy { //if that they are of type Enemy
-                enemy.takeDamage(of: 10) //let enemy take damage if involved in the collision
-            } else if let player = bulletContact?.otherNode as? Player { //if that they are of type Player
-                player.takeDamage(of: 1) //let player take damage if involved in the collision
-            }
-            destroy(node: bulletContact?.bullet)
-            return
+        if let bulletContact = bulletContactTest(contact: contact, nodeA: nodeA, nodeB: nodeB) {
+            handleBulletContact(bulletContact: bulletContact)
+        } else if let meleeContact = meleeContactTest(contact: contact, nodeA: nodeA, nodeB: nodeB) {
+            handleMeleeContact(meleeContact: meleeContact)
         } else if inContact(contact: contact, "player", "ground") {
             player.inAir = false
         }
+        if inContact(contact: contact, "player", "ground") {
+            player.inAir = false
+        }
+    }
+    
+    private func handleBulletContact(bulletContact: (bullet: Bullet, otherNode: SKNode)) {
+        if let enemy = bulletContact.otherNode as? Enemy { //if that they are of type Enemy
+            enemy.takeDamage(of: 10) //let enemy take damage if involved in the collision
+        } else if let player = bulletContact.otherNode as? Player { //if that they are of type Player
+            player.takeDamage(of: 1) //let player take damage if involved in the collision
+        }
+        destroy(node: bulletContact.bullet)
+        return
+    }
+    
+    private func handleMeleeContact(meleeContact: (meleeWeapon: MeleeWeapon, otherNode: SKNode)) {
+        if let enemy = meleeContact.otherNode as? Enemy { //if that they are of type Enemy
+            enemy.takeDamage(of: 15) //let enemy take damage if involved in the collision
+        } else if let player = meleeContact.otherNode as? Player { //if that they are of type Player
+            player.takeDamage(of: 3) //let player take damage if involved in the collision
+        }
+        return
     }
 }

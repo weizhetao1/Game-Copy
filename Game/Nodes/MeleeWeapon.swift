@@ -14,9 +14,16 @@ enum MeleeWeaponType {
 
 class MeleeWeapon: SKSpriteNode {
     
-    var facing: PlayerFacing? = .right {
+    var facing: PlayerFacing = .right {
         didSet {
-            
+            switch facing {
+            case .right:
+                self.xScale = abs(self.xScale)
+                self.attackRotate = SKAction.rotate(byAngle: -CGFloat.pi / 2, duration: 0.2)
+            case .left:
+                self.xScale = -abs(self.xScale)
+                self.attackRotate = SKAction.rotate(byAngle: CGFloat.pi / 2, duration: 0.2)
+            }
         }
     }
     //The following are actions used when attacking, initialised here so they can be reused
