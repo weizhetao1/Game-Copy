@@ -19,6 +19,7 @@ enum ButtonType: String {
     case jump = "Jump"
     case rangedAttack = "RangedAttack"
     case meleeAttack = "MeleeAttack"
+    case timeSlow = "TimeSlow"
 }
 
 class ButtonNode: SKShapeNode {
@@ -67,6 +68,8 @@ class ButtonNode: SKShapeNode {
             return CGPoint(x: SceneInfo.size.width * 0.35, y: SceneInfo.size.height * -0.25)
         case .meleeAttack:
             return CGPoint(x: SceneInfo.size.width * 0.39, y: SceneInfo.size.height * -0.25)
+        case .timeSlow:
+            return CGPoint(x: SceneInfo.size.width * 0.36, y: SceneInfo.size.height * -0.20)
         }
     }
     

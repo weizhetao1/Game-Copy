@@ -68,15 +68,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let buttonRight = ButtonNode(type: .moveRight, action: { self.rightTouched = true }, endAction: { self.rightTouched = false })
         let jumpButton = ButtonNode(type: .jump, action: player.jump)
         let meleeButton = ButtonNode(type: .meleeAttack, action: player.meleeAttack)
+        let slowButton = ButtonNode(type: .timeSlow, action: self.timeSlow)
         
         cameraNode.addChild(fireButton)
         cameraNode.addChild(jumpButton)
         cameraNode.addChild(buttonLeft)
         cameraNode.addChild(buttonRight)
         cameraNode.addChild(meleeButton)
+        cameraNode.addChild(slowButton)
         
         healthBar = HealthBar(screenSize: self.size, playerObject: player)
         cameraNode.addChild(healthBar) //add to UI layer (camera node)
+    }
+    
+    func timeSlow() {
+        self.physicsWorld.speed = SceneInfo.timeSlowFactor //slows down the world
+        self.player.speedFactor = 1 / SceneInfo.timeSlowFactor //speeds up the player
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
+            self.physicsWorld.speed = 1
+            self.player.speedFactor = 1
+        }
     }
     
     override func update(_ currentTime: TimeInterval) {

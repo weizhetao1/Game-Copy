@@ -35,7 +35,15 @@ class Player: SKSpriteNode {
             }
         }
     }
-    private var horizontalMoveSpeed: CGFloat = 150
+    private var horizontalMoveSpeed: CGFloat = PlayerBaseStats.horizontalMoveSpeed
+    var speedFactor: CGFloat = 1 {
+        didSet {
+            self.horizontalMoveSpeed = PlayerBaseStats.horizontalMoveSpeed * speedFactor
+            self.physicsBody?.friction = PlayerBaseStats.friction * speedFactor
+            self.bulletSpeed = PlayerBaseStats.bulletSpeed * speedFactor
+        }
+    }
+    private var bulletSpeed: CGFloat = PlayerBaseStats.bulletSpeed
     private var doubleJumpUsed: Bool = false
     private var jumpImpulse: CGFloat = 8000
     var inAir: Bool = false {
@@ -59,7 +67,7 @@ class Player: SKSpriteNode {
         self.physicsBody?.contactTestBitMask = PhysicsCategory.platform | PhysicsCategory.ground //combines categories
         self.physicsBody?.collisionBitMask = PhysicsCategory.platform | PhysicsCategory.wall | PhysicsCategory.enemy | PhysicsCategory.ground
         self.physicsBody?.linearDamping = 0
-        self.physicsBody?.friction = 0.6
+        self.physicsBody?.friction = PlayerBaseStats.friction
         self.physicsBody?.mass = 10
         self.physicsBody?.restitution = 0
         self.physicsBody?.allowsRotation = false
@@ -111,7 +119,7 @@ class Player: SKSpriteNode {
     func shootBullet() {
         guard let scene = self.scene else { return } //make sure player has a scene (normally GameScene)
         let closestEnemy = findClosestEnemy()
-        let bullet = Bullet(position: self.position, towards: closestEnemy, speed: 200, targetTestBitMask: PhysicsCategory.enemy)
+        let bullet = Bullet(position: self.position, towards: closestEnemy, speed: self.bulletSpeed, targetTestBitMask: PhysicsCategory.enemy)
         
         scene.addChild(bullet)
     }

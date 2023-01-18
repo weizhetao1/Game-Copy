@@ -22,6 +22,13 @@ enum PhysicsCategory {
     static let sword: UInt32 = 1 << 6
 }
 
+enum PlayerBaseStats {
+    static let horizontalMoveSpeed: CGFloat = 150
+    static let bulletSpeed: CGFloat = 200
+    static let friction: CGFloat = 0.6
+}
+
 enum SceneInfo {
     static var size: CGSize = CGSize()
+    static var timeSlowFactor: CGFloat = 0.3
 }
