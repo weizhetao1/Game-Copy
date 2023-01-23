@@ -39,7 +39,6 @@ class Player: SKSpriteNode {
     var speedFactor: CGFloat = 1 {
         didSet {
             self.horizontalMoveSpeed = PlayerBaseStats.horizontalMoveSpeed * speedFactor
-            self.physicsBody?.friction = PlayerBaseStats.friction * speedFactor
             self.bulletSpeed = PlayerBaseStats.bulletSpeed * speedFactor
         }
     }
@@ -97,9 +96,17 @@ class Player: SKSpriteNode {
         facing = .right
     }
     
+    func stopHorizontalMovement() {
+        guard let velocity = self.physicsBody?.velocity else { return }
+        let direction = sign(velocity.dx) //get sign of current horizontal velocity
+        print(direction) //testing purposes
+        self.physicsBody?.velocity = CGVector(dx: direction * PlayerBaseStats.horizontalMoveSpeed, dy: velocity.dy) //stop gradually by setting velocity to base stat
+    }
+    
     func jump() {
         if doubleJumpUsed == false {
-            self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: jumpImpulse))
+            guard let velocity = self.physicsBody?.velocity else { return }
+            self.physicsBody?.velocity = CGVector(dx: velocity.dx, dy: PlayerBaseStats.jumpSpeed) //keep horizontal speed the same
         }
         if inAir == true {
             doubleJumpUsed = true

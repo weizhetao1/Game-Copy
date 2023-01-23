@@ -65,11 +65,11 @@ class ButtonNode: SKShapeNode {
         case .jump:
             return CGPoint(x: SceneInfo.size.width * 0.28, y: SceneInfo.size.height * -0.20)
         case .rangedAttack:
-            return CGPoint(x: SceneInfo.size.width * 0.35, y: SceneInfo.size.height * -0.25)
+            return CGPoint(x: SceneInfo.size.width * 0.33, y: SceneInfo.size.height * -0.25)
         case .meleeAttack:
-            return CGPoint(x: SceneInfo.size.width * 0.39, y: SceneInfo.size.height * -0.25)
+            return CGPoint(x: SceneInfo.size.width * 0.40, y: SceneInfo.size.height * -0.25)
         case .timeSlow:
-            return CGPoint(x: SceneInfo.size.width * 0.36, y: SceneInfo.size.height * -0.20)
+            return CGPoint(x: SceneInfo.size.width * 0.36, y: SceneInfo.size.height * -0.15)
         }
     }
     

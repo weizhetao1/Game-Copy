@@ -14,8 +14,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var player: Player! //There must be a player node, whether dead or alive
     var healthBar: HealthBar! //initiate health bar
     private var cameraNode = SKCameraNode()
-    private var leftTouched: Bool = false
-    private var rightTouched: Bool = false
+    private var leftTouched: Bool = false {
+        didSet {
+            if !leftTouched {
+                player.stopHorizontalMovement()
+            }
+        }
+    }
+    private var rightTouched: Bool = false {
+        didSet {
+            if !rightTouched {
+                player.stopHorizontalMovement()
+            }
+        }
+    }
     
     override func didMove(to view: SKView) {
         SceneInfo.size = self.size
@@ -37,7 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func setUpPhysics() {
-        physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8)
+        physicsWorld.gravity = CGVector(dx: 0.0, dy: PhysicsWorldBaseStats.gravity)
         physicsWorld.speed = 1.0
         physicsWorld.contactDelegate = self //informs the class itself upon contacts
     }
@@ -82,11 +94,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func timeSlow() {
-        self.physicsWorld.speed = SceneInfo.timeSlowFactor //slows down the world
-        self.player.speedFactor = 1 / SceneInfo.timeSlowFactor //speeds up the player
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
+        self.physicsWorld.speed = PhysicsWorldBaseStats.timeSlowFactor //slows down the world
+        self.physicsWorld.gravity = CGVector(dx: 0.0, dy: PhysicsWorldBaseStats.gravity * (1 / PhysicsWorldBaseStats.timeSlowFactor)) //increase gravity
+        self.player.speedFactor = 1 / PhysicsWorldBaseStats.timeSlowFactor //speeds up the player
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) { //called after 10 seconds
             self.physicsWorld.speed = 1
-            self.player.speedFactor = 1
+            self.physicsWorld.gravity = CGVector(dx: 0.0, dy: PhysicsWorldBaseStats.gravity) //set back to base gravity
+            self.player.speedFactor = 1 //restore speeds
         }
     }
     

@@ -24,11 +24,16 @@ enum PhysicsCategory {
 
 enum PlayerBaseStats {
     static let horizontalMoveSpeed: CGFloat = 150
+    static let jumpSpeed: CGFloat = 500
     static let bulletSpeed: CGFloat = 200
     static let friction: CGFloat = 0.6
 }
 
 enum SceneInfo {
     static var size: CGSize = CGSize()
+}
+
+enum PhysicsWorldBaseStats {
     static var timeSlowFactor: CGFloat = 0.3
+    static var gravity: CGFloat = -9.8
 }
