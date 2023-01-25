@@ -14,7 +14,7 @@ enum PlayerFacing: Int {
 
 class Player: SKSpriteNode {
     
-    var health: CGFloat = 100 {
+    var health: CGFloat = PlayerBaseStats.startingHealth {
         didSet {
             if health <= 0 {
                 health = 0 //doesn't drop below 0
@@ -24,7 +24,7 @@ class Player: SKSpriteNode {
             healthBar?.update()
         }
     }
-    var maxHealth: CGFloat = 150
+    var maxHealth: CGFloat = PlayerBaseStats.maxHealth
     var facing: PlayerFacing = .right {
         didSet {
             switch facing {
@@ -40,11 +40,12 @@ class Player: SKSpriteNode {
         didSet {
             self.horizontalMoveSpeed = PlayerBaseStats.horizontalMoveSpeed * speedFactor
             self.bulletSpeed = PlayerBaseStats.bulletSpeed * speedFactor
+            self.jumpSpeed = PlayerBaseStats.jumpSpeed * speedFactor
         }
     }
     private var bulletSpeed: CGFloat = PlayerBaseStats.bulletSpeed
     private var doubleJumpUsed: Bool = false
-    private var jumpImpulse: CGFloat = 8000
+    private var jumpSpeed: CGFloat = PlayerBaseStats.jumpSpeed
     var inAir: Bool = false {
         didSet {
             if inAir == false {
@@ -106,7 +107,7 @@ class Player: SKSpriteNode {
     func jump() {
         if doubleJumpUsed == false {
             guard let velocity = self.physicsBody?.velocity else { return }
-            self.physicsBody?.velocity = CGVector(dx: velocity.dx, dy: PlayerBaseStats.jumpSpeed) //keep horizontal speed the same
+            self.physicsBody?.velocity = CGVector(dx: velocity.dx, dy: self.jumpSpeed) //keep horizontal speed the same
         }
         if inAir == true {
             doubleJumpUsed = true

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C50E750B29815B03009700EB /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E750A29815B03009700EB /* Bool.swift */; };
 		C52F1F0F28CF2BE8001B97BD /* GameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52F1F0E28CF2BE8001B97BD /* GameApp.swift */; };
 		C52F1F1128CF2BE8001B97BD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52F1F1028CF2BE8001B97BD /* ContentView.swift */; };
 		C52F1F1328CF2BEB001B97BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C52F1F1228CF2BEB001B97BD /* Assets.xcassets */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C50E750A29815B03009700EB /* Bool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
 		C52F1F0B28CF2BE8001B97BD /* Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Game.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C52F1F0E28CF2BE8001B97BD /* GameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameApp.swift; sourceTree = "<group>"; };
 		C52F1F1028CF2BE8001B97BD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				C59E262029190F2E0091E81E /* SKNode.swift */,
+				C50E750A29815B03009700EB /* Bool.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 			files = (
 				C5AB8F8F28D1FBA500787D73 /* GameScene.swift in Sources */,
 				C59C7BBC292D9DC200BDB0E7 /* HealthBar.swift in Sources */,
+				C50E750B29815B03009700EB /* Bool.swift in Sources */,
 				C52F1F1128CF2BE8001B97BD /* ContentView.swift in Sources */,
 				C5532BAA292EDFFE00007433 /* Constants.swift in Sources */,
 				C58357C6292508D600A5C0B6 /* MapGenerator.swift in Sources */,

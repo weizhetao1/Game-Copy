@@ -95,7 +95,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func timeSlow() {
         self.physicsWorld.speed = PhysicsWorldBaseStats.timeSlowFactor //slows down the world
-        self.physicsWorld.gravity = CGVector(dx: 0.0, dy: PhysicsWorldBaseStats.gravity * (1 / PhysicsWorldBaseStats.timeSlowFactor)) //increase gravity
+        self.physicsWorld.gravity = CGVector(dx: 0.0, dy: PhysicsWorldBaseStats.gravity / pow(PhysicsWorldBaseStats.timeSlowFactor, 2)) //increase gravity
         self.player.speedFactor = 1 / PhysicsWorldBaseStats.timeSlowFactor //speeds up the player
         DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) { //called after 10 seconds
             self.physicsWorld.speed = 1
@@ -186,9 +186,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func handleBulletContact(bulletContact: (bullet: Bullet, otherNode: SKNode)) {
         if let enemy = bulletContact.otherNode as? Enemy { //if that they are of type Enemy
-            enemy.takeDamage(of: 10) //let enemy take damage if involved in the collision
+            enemy.takeDamage(of: PlayerBaseStats.bulletDamage) //let enemy take damage if involved in the collision
         } else if let player = bulletContact.otherNode as? Player { //if that they are of type Player
-            player.takeDamage(of: 1) //let player take damage if involved in the collision
+            player.takeDamage(of: EnemyBaseStats.bulletDamage) //let player take damage if involved in the collision
         }
         destroy(node: bulletContact.bullet)
         return
@@ -196,9 +196,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func handleMeleeContact(meleeContact: (meleeWeapon: MeleeWeapon, otherNode: SKNode)) {
         if let enemy = meleeContact.otherNode as? Enemy { //if that they are of type Enemy
-            enemy.takeDamage(of: 15) //let enemy take damage if involved in the collision
+            enemy.takeDamage(of: PlayerBaseStats.meleeDamage) //let enemy take damage if involved in the collision
         } else if let player = meleeContact.otherNode as? Player { //if that they are of type Player
-            player.takeDamage(of: 3) //let player take damage if involved in the collision
+            player.takeDamage(of: EnemyBaseStats.meleeDamage) //let player take damage if involved in the collision
         }
         return
     }

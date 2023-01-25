@@ -24,8 +24,6 @@ class MapGenerator {
     }
     
     private func setUpPhysicsBody() {
-        let tileSize = tileMap.tileSize
-        
         for column in 0..<tileMap.numberOfColumns {
             for row in 0..<tileMap.numberOfRows {
                 if let tileDefinition = tileMap.tileDefinition(atColumn: column, row: row) { //if there is a tile filled at this location
@@ -34,22 +32,41 @@ class MapGenerator {
                     if tileDefinition.name?.contains("Grass") ?? false {
                         nodeName = "ground"
                         categoryBitMask = PhysicsCategory.ground
+                        addSinglePhysicsBody(name: nodeName, column: column, row: row, categoryBitMask: categoryBitMask)
+                        if Bool.randomTrue(probability: MapStats.enemySpawnChance) {
+                            //SpawnEnemyAbove()
+                        }
                     } else if tileDefinition.name?.contains("Cobblestone") ?? false {
                         nodeName = "wall"
                         categoryBitMask = PhysicsCategory.wall
+                        addSinglePhysicsBody(name: nodeName, column: column, row: row, categoryBitMask: categoryBitMask)
                     }
-                    let tileNode = SKSpriteNode(color: UIColor.clear, size: tileSize)
-                    tileNode.position = tileMap.centerOfTile(atColumn: column, row: row) //set tile position
-                    tileNode.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
-                    tileNode.physicsBody?.isDynamic = false //these map tile nodes don't move
-                    tileNode.physicsBody?.categoryBitMask = categoryBitMask //testing for contact for double jump purposes
-                    tileNode.physicsBody?.friction = 0.2 //provides friction for player to stop moving
-                    tileNode.physicsBody?.restitution = 0 //no bouncing
-                    tileNode.name = nodeName
-                    tileMap.addChild(tileNode)
                 }
             }
         }
+    }
+    
+    private func addSinglePhysicsBody(name: String, column: Int, row: Int, categoryBitMask: UInt32) {
+        let tileSize = tileMap.tileSize
+        
+        let tileNode = SKSpriteNode(color: UIColor.clear, size: tileSize)
+        tileNode.position = tileMap.centerOfTile(atColumn: column, row: row) //set tile position
+        tileNode.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
+        tileNode.physicsBody?.isDynamic = false //these map tile nodes don't move
+        tileNode.physicsBody?.categoryBitMask = categoryBitMask //testing for contact for double jump purposes
+        tileNode.physicsBody?.friction = 0.2 //provides friction for player to stop moving
+        tileNode.physicsBody?.restitution = 0 //no bouncing
+        tileNode.name = name
+        tileMap.addChild(tileNode)
+    }
+    
+    private func spawnEnemyAbove(column: Int, row: Int) {
+        let tileSize = tileMap.tileSize
+        let tilePosition = tileMap.centerOfTile(atColumn: column, row: row) //find tile position
+        let enemyPosition = CGPoint(x: tilePosition.x, y: tilePosition.y + tileSize.height) //enemy position above the tile
+        let enemy = Enemy(imageNamed: "Stickman", position: enemyPosition, zPosition: 0, name: "enemy", health: EnemyBaseStats.maxhealth)
+        enemy.scale(to: CGSize(width: 92, height: 92))
+        
     }
     
 }

@@ -10,7 +10,7 @@ import SpriteKit
 
 class Enemy: SKSpriteNode {
     
-    private var health: Int {
+    private var health: CGFloat {
         didSet {
             if health <= 0 {
                 self.removeFromParent()
@@ -18,7 +18,7 @@ class Enemy: SKSpriteNode {
         }
     }
     
-    init(imageNamed: String, position: CGPoint, zPosition: CGFloat, name: String, health: Int) {
+    init(imageNamed: String, position: CGPoint, zPosition: CGFloat, name: String, health: CGFloat) {
         self.health = health
         let texture = SKTexture(imageNamed: imageNamed)
         super.init(texture: texture, color: .clear, size: texture.size())
@@ -37,7 +37,7 @@ class Enemy: SKSpriteNode {
         super.removeFromParent()
     }
     
-    func takeDamage(of damage: Int) {
+    func takeDamage(of damage: CGFloat) {
         health -= damage
     }
     
@@ -50,9 +50,8 @@ class Enemy: SKSpriteNode {
     }
     
     func update() {
-        let randomInteger = Int.random(in: 0..<100)
-        if randomInteger == 1 {
-            self.shootBullet() //1% chance every frame to shoot a bullet
+        if Bool.randomTrue(probability: EnemyBaseStats.shootingChance) {
+            self.shootBullet() //0.5% chance every frame to shoot a bullet
         }
     }
     
