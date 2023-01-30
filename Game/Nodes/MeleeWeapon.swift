@@ -14,22 +14,23 @@ enum MeleeWeaponType {
 
 class MeleeWeapon: SKSpriteNode {
     
+    private let swingTime: CGFloat = MeleeWeaponStats.swingTime
     var facing: PlayerFacing = .right {
         didSet {
             switch facing {
             case .right:
                 self.xScale = abs(self.xScale)
-                self.attackRotate = SKAction.rotate(byAngle: -CGFloat.pi / 2, duration: 0.2)
+                self.attackRotate = SKAction.rotate(byAngle: -CGFloat.pi / 2, duration: MeleeWeaponStats.swingTime)
             case .left:
                 self.xScale = -abs(self.xScale)
-                self.attackRotate = SKAction.rotate(byAngle: CGFloat.pi / 2, duration: 0.2)
+                self.attackRotate = SKAction.rotate(byAngle: CGFloat.pi / 2, duration: MeleeWeaponStats.swingTime)
             }
         }
     }
     //The following are actions used when attacking, initialised here so they can be reused
-    private var attackRotate = SKAction.rotate(byAngle: -CGFloat.pi / 2, duration: 0.2)
-    private let attackWait = SKAction.wait(forDuration: 0.1)
-    private var reverseAttack = SKAction.rotate(toAngle: CGFloat.zero, duration: 0.03, shortestUnitArc: true)
+    private var attackRotate = SKAction.rotate(byAngle: -CGFloat.pi / 2, duration: MeleeWeaponStats.swingTime)
+    private let attackWait = SKAction.wait(forDuration: MeleeWeaponStats.swingTime / 3)
+    private var reverseAttack = SKAction.rotate(toAngle: CGFloat.zero, duration: MeleeWeaponStats.swingTime / 5, shortestUnitArc: true)
     
     init() {
         let texture = SKTexture(imageNamed: "Sword") //load texture

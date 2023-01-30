@@ -35,7 +35,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setUpPlayer()
         setUpBackground()
         setUpMap()
-        setUpEnemy()
         setUpUI()
     }
     
@@ -59,18 +58,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(player)
     }
     
-    private func setUpEnemy() {
-        for i in 0...5 {
-            let enemy = Enemy(imageNamed: "Stickman", position: CGPoint(x: size.width * (0.5+0.1*CGFloat(i)), y: size.height * 0.5),
-                              zPosition: 0, name: "enemy", health: 100)
-            enemy.scale(to: CGSize(width: 92, height: 92))
-            addChild(enemy)
-        }
-    }
-    
     private func setUpMap() {
         let mapGenerator = MapGenerator()
-        mapGenerator.setUpTileMap(fileNamed: "Map1.sks")
+        mapGenerator.setUpTileMap(fileNamed: "Map1.sks", scene: self)
         addChild(mapGenerator.tileMap)
     }
     
@@ -177,9 +167,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else if let meleeContact = meleeContactTest(contact: contact, nodeA: nodeA, nodeB: nodeB) {
             handleMeleeContact(meleeContact: meleeContact)
         } else if inContact(contact: contact, "player", "ground") {
-            player.inAir = false
-        }
-        if inContact(contact: contact, "player", "ground") {
             player.inAir = false
         }
     }

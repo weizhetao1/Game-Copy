@@ -23,21 +23,28 @@ enum PhysicsCategory {
 }
 
 enum PlayerBaseStats {
+    static var size: CGFloat = 128
     static var maxHealth: CGFloat = 150
     static var startingHealth: CGFloat = 100
     static var bulletDamage: CGFloat = 10
     static var meleeDamage: CGFloat = 15
-    static let horizontalMoveSpeed: CGFloat = 150
-    static let jumpSpeed: CGFloat = 500
+    static let horizontalMoveSpeed: CGFloat = 280
+    static let jumpSpeed: CGFloat = 900
     static let bulletSpeed: CGFloat = 200
     static let friction: CGFloat = 0.6
 }
 
 enum EnemyBaseStats {
+    static var size: CGFloat = 128
     static var maxhealth: CGFloat = 100
     static var bulletDamage: CGFloat = 1
+    static var bulletSpeed: CGFloat = 200
     static var shootingChance: CGFloat = 0.005 //chance of chooting per frame
     static var meleeDamage: CGFloat = 3
+}
+
+enum MeleeWeaponStats {
+    static let swingTime: CGFloat = 0.12
 }
 
 enum SceneInfo {

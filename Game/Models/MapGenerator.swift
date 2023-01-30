@@ -11,8 +11,9 @@ import SpriteKit
 class MapGenerator {
     
     var tileMap: SKTileMapNode = SKTileMapNode()
+    weak var scene: SKScene?
     
-    func setUpTileMap(fileNamed fileName: String) {
+    func setUpTileMap(fileNamed fileName: String, scene: SKScene) {
         guard let tileScene = SKScene(fileNamed: fileName),
               let map = tileScene.childNode(withName: "Map1") as? SKTileMapNode else {
                   fatalError("Map1 not loaded")
@@ -20,6 +21,7 @@ class MapGenerator {
         map.removeFromParent()
         map.anchorPoint = CGPoint(x: 0, y: 0)
         tileMap = map
+        self.scene = scene
         setUpPhysicsBody()
     }
     
@@ -30,11 +32,11 @@ class MapGenerator {
                     var nodeName = ""
                     var categoryBitMask: UInt32 = 0
                     if tileDefinition.name?.contains("Grass") ?? false {
-                        nodeName = "ground"
+                        nodeName = "ground" //if it's grass it's ground
                         categoryBitMask = PhysicsCategory.ground
                         addSinglePhysicsBody(name: nodeName, column: column, row: row, categoryBitMask: categoryBitMask)
                         if Bool.randomTrue(probability: MapStats.enemySpawnChance) {
-                            //SpawnEnemyAbove()
+                            spawnEnemyAbove(column: column, row: row) //add a enemy above the tile
                         }
                     } else if tileDefinition.name?.contains("Cobblestone") ?? false {
                         nodeName = "wall"
@@ -65,8 +67,7 @@ class MapGenerator {
         let tilePosition = tileMap.centerOfTile(atColumn: column, row: row) //find tile position
         let enemyPosition = CGPoint(x: tilePosition.x, y: tilePosition.y + tileSize.height) //enemy position above the tile
         let enemy = Enemy(imageNamed: "Stickman", position: enemyPosition, zPosition: 0, name: "enemy", health: EnemyBaseStats.maxhealth)
-        enemy.scale(to: CGSize(width: 92, height: 92))
-        
+        self.scene?.addChild(enemy)
     }
     
 }

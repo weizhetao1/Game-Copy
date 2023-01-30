@@ -17,6 +17,7 @@ class Enemy: SKSpriteNode {
             }
         }
     }
+    private var bulletSpeed: CGFloat = EnemyBaseStats.bulletSpeed
     
     init(imageNamed: String, position: CGPoint, zPosition: CGFloat, name: String, health: CGFloat) {
         self.health = health
@@ -31,6 +32,7 @@ class Enemy: SKSpriteNode {
         self.physicsBody?.collisionBitMask = PhysicsCategory.platform | PhysicsCategory.wall | PhysicsCategory.player | PhysicsCategory.ground
         self.physicsBody?.allowsRotation = false
         self.physicsBody?.mass = 1000
+        self.scale(to: CGSize(width: EnemyBaseStats.size, height: EnemyBaseStats.size))
     }
     
     override func removeFromParent() {
@@ -44,7 +46,7 @@ class Enemy: SKSpriteNode {
     func shootBullet() {
         guard let scene = self.scene else { return } //make sure enemy has a scene (normally GameScene)
         guard let player = scene.childNode(withName: "player") else { return } //make sure there is a player in scene to shoot bullet at
-        let bullet = Bullet(position: self.position, towards: player, speed: 200, targetTestBitMask: PhysicsCategory.player)
+        let bullet = Bullet(position: self.position, towards: player, speed: self.bulletSpeed, targetTestBitMask: PhysicsCategory.player)
         
         scene.addChild(bullet)
     }

@@ -26,6 +26,7 @@ class HealthBar: SKSpriteNode {
         
         initiateLabelNode()
         initiateBorder()
+        updateLabelNode()
     }
     
     required init?(coder aDecoder: NSCoder) {
