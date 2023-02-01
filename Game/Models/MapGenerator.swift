@@ -28,17 +28,19 @@ class MapGenerator {
     private func setUpPhysicsBody() {
         for column in 0..<tileMap.numberOfColumns {
             for row in 0..<tileMap.numberOfRows {
-                if let tileDefinition = tileMap.tileDefinition(atColumn: column, row: row) { //if there is a tile filled at this location
+                if let tileGroup = tileMap.tileGroup(atColumn: column, row: row) { //if there is a tile filled at this location
                     var nodeName = ""
                     var categoryBitMask: UInt32 = 0
-                    if tileDefinition.name?.contains("Grass") ?? false {
+                    if tileGroup.name?.contains("Grass") ?? false {
                         nodeName = "ground" //if it's grass it's ground
                         categoryBitMask = PhysicsCategory.ground
                         addSinglePhysicsBody(name: nodeName, column: column, row: row, categoryBitMask: categoryBitMask)
-                        if Bool.randomTrue(probability: MapStats.enemySpawnChance) {
-                            spawnEnemyAbove(column: column, row: row) //add a enemy above the tile
+                        if !(tileMap.tileGroup(atColumn: column, row: row - 1)?.name?.contains("Grass") ?? false) { //if tile above is not grass
+                            if Bool.randomTrue(probability: MapStats.enemySpawnChance) {
+                                spawnEnemyAbove(column: column, row: row) //add a enemy above the tile
+                            }
                         }
-                    } else if tileDefinition.name?.contains("Cobblestone") ?? false {
+                    } else if tileGroup.name?.contains("Stone") ?? false {
                         nodeName = "wall"
                         categoryBitMask = PhysicsCategory.wall
                         addSinglePhysicsBody(name: nodeName, column: column, row: row, categoryBitMask: categoryBitMask)

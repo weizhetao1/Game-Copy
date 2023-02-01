@@ -71,7 +71,7 @@ class Player: SKSpriteNode {
         self.physicsBody?.mass = 10
         self.physicsBody?.restitution = 0
         self.physicsBody?.allowsRotation = false
-        self.scale(to: CGSize(width: 128, height: 128))
+        self.scale(to: CGSize(width: PlayerBaseStats.size, height: PlayerBaseStats.size))
         attachMeleeWeapon()
     }
     
@@ -100,7 +100,6 @@ class Player: SKSpriteNode {
     func stopHorizontalMovement() {
         guard let velocity = self.physicsBody?.velocity else { return }
         let direction = sign(velocity.dx) //get sign of current horizontal velocity
-        print(direction) //testing purposes
         self.physicsBody?.velocity = CGVector(dx: direction * PlayerBaseStats.horizontalMoveSpeed, dy: velocity.dy) //stop gradually by setting velocity to base stat
     }
     

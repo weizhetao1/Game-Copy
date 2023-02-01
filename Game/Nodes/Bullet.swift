@@ -15,7 +15,7 @@ class Bullet: SKSpriteNode {
         super.init(texture: texture, color: .clear, size: texture.size())
         self.position = position
         self.zPosition = 1
-        self.scale(to: CGSize(width: 10, height: 10))
+        self.scale(to: CGSize(width: 3, height: 3))
         self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width / 2)
         self.physicsBody?.velocity = velocityTowards(node: node, speed: speed)
         self.physicsBody?.categoryBitMask = PhysicsCategory.bullet

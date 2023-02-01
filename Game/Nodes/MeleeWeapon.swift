@@ -43,7 +43,7 @@ class MeleeWeapon: SKSpriteNode {
         self.physicsBody?.pinned = true //pinned to the player
         self.physicsBody?.angularDamping = 0 //no angular damping
         self.physicsBody?.allowsRotation = false //no rotation to start with
-        self.scale(to: CGSize(width: 1000, height: 1000)) //scale to appropriate size
+        self.scale(to: CGSize(width: MeleeWeaponStats.size, height: MeleeWeaponStats.size)) //scale to appropriate size
     }
     
     required init?(coder aDecoder: NSCoder) {

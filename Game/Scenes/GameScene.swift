@@ -42,8 +42,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         backgroundColor = UIColor.white
         cameraNode.position = CGPoint(x: size.width / 2 , y: size.width / 2)
         self.camera = cameraNode
-        cameraNode.xScale = 3
-        cameraNode.yScale = 3
+        cameraNode.xScale = 0.9
+        cameraNode.yScale = 0.9
         addChild(cameraNode)
     }
     
