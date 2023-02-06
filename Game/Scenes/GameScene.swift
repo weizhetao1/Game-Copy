@@ -90,8 +90,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) { //called after 10 seconds
             self.physicsWorld.speed = 1
             self.physicsWorld.gravity = CGVector(dx: 0.0, dy: PhysicsWorldBaseStats.gravity) //set back to base gravity
-            self.player.speedFactor = 1 //restore speeds
+            self.player.speedFactor = 1
         }
+    }
+    
+    func pause() {
+        self.isPaused = true
+    }
+    
+    func unpause() {
+        self.isPaused = false
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -172,9 +180,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func handleBulletContact(bulletContact: (bullet: Bullet, otherNode: SKNode)) {
-        if let enemy = bulletContact.otherNode as? Enemy { //if that they are of type Enemy
+        if let enemy = bulletContact.otherNode as? Enemy {
             enemy.takeDamage(of: PlayerBaseStats.bulletDamage) //let enemy take damage if involved in the collision
-        } else if let player = bulletContact.otherNode as? Player { //if that they are of type Player
+        } else if let player = bulletContact.otherNode as? Player {
             player.takeDamage(of: EnemyBaseStats.bulletDamage) //let player take damage if involved in the collision
         }
         destroy(node: bulletContact.bullet)
@@ -182,9 +190,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func handleMeleeContact(meleeContact: (meleeWeapon: MeleeWeapon, otherNode: SKNode)) {
-        if let enemy = meleeContact.otherNode as? Enemy { //if that they are of type Enemy
+        if let enemy = meleeContact.otherNode as? Enemy {
             enemy.takeDamage(of: PlayerBaseStats.meleeDamage) //let enemy take damage if involved in the collision
-        } else if let player = meleeContact.otherNode as? Player { //if that they are of type Player
+        } else if let player = meleeContact.otherNode as? Player {
             player.takeDamage(of: EnemyBaseStats.meleeDamage) //let player take damage if involved in the collision
         }
         return
