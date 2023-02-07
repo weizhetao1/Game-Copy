@@ -41,6 +41,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func setUpBackground() {
         backgroundColor = UIColor.white
         cameraNode.position = CGPoint(x: size.width / 2 , y: size.width / 2)
+        cameraNode.zPosition = 50
         self.camera = cameraNode
         cameraNode.xScale = 0.9
         cameraNode.yScale = 0.9
@@ -71,6 +72,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let jumpButton = ButtonNode(type: .jump, action: player.jump)
         let meleeButton = ButtonNode(type: .meleeAttack, action: player.meleeAttack)
         let slowButton = ButtonNode(type: .timeSlow, action: self.timeSlow)
+        let pauseButton = ButtonNode(type: .pause, action: self.togglePause)
         
         cameraNode.addChild(fireButton)
         cameraNode.addChild(jumpButton)
@@ -78,6 +80,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cameraNode.addChild(buttonRight)
         cameraNode.addChild(meleeButton)
         cameraNode.addChild(slowButton)
+        cameraNode.addChild(pauseButton)
         
         healthBar = HealthBar(screenSize: self.size, playerObject: player)
         cameraNode.addChild(healthBar) //add to UI layer (camera node)
@@ -94,12 +97,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func pause() {
-        self.isPaused = true
-    }
-    
-    func unpause() {
-        self.isPaused = false
+    func togglePause() {
+        if self.isPaused == false {
+            let pauseMessage = PauseMessage()
+            let xPosition = self.frame.midX - pauseMessage.frame.size.width / 2
+            let YPosition = self.frame.midY - pauseMessage.frame.size.height / 2
+            pauseMessage.position = CGPoint(x: xPosition, y: YPosition) //set to the middle
+            self.addChild(pauseMessage)
+            self.isPaused = true
+        } else {
+            self.isPaused = false
+            self.childNode(withName: "PauseMessage")?.removeFromParent()
+        }
     }
     
     override func update(_ currentTime: TimeInterval) {

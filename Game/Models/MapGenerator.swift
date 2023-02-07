@@ -23,6 +23,7 @@ class MapGenerator {
         tileMap = map
         self.scene = scene
         setUpPhysicsBody()
+        spawnEnemies()
     }
     
     private func setUpPhysicsBody() {
@@ -35,11 +36,11 @@ class MapGenerator {
                         nodeName = "ground" //if it's grass it's ground
                         categoryBitMask = PhysicsCategory.ground
                         addSinglePhysicsBody(name: nodeName, column: column, row: row, categoryBitMask: categoryBitMask)
-                        if (tileMap.tileGroup(atColumn: column, row: row - 1)?.name == nil) { //if tile above is empty
-                            if Bool.randomTrue(probability: MapStats.enemySpawnChance) {
-                                spawnEnemyAbove(column: column, row: row) //add a enemy above the tile
-                            }
-                        }
+                        //if (tileMap.tileGroup(atColumn: column, row: row - 1)?.name == nil) { //if tile above is empty
+                            //if Bool.randomTrue(probability: MapStats.enemySpawnChance) {
+                               // spawnEnemyAbove(column: column, row: row) //add a enemy above the tile
+                          //  }
+                        //}
                     } else if tileGroup.name?.contains("Stone") ?? false {
                         nodeName = "wall"
                         categoryBitMask = PhysicsCategory.wall
@@ -64,10 +65,26 @@ class MapGenerator {
         tileMap.addChild(tileNode)
     }
     
+    private func spawnEnemies() {
+        for column in 0..<tileMap.numberOfColumns {
+            for row in 0..<tileMap.numberOfRows {
+                if let tileGroup = tileMap.tileGroup(atColumn: column, row: row) { //if there is a tile filled at this location
+                    if tileGroup.name?.contains("Grass") ?? false {
+                        if (tileMap.tileGroup(atColumn: column, row: row - 1)?.name == nil) { //if tile above is empty
+                            if Bool.randomTrue(probability: MapStats.enemySpawnChance) {
+                                spawnEnemyAbove(column: column, row: row) //add a enemy above the tile
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     private func spawnEnemyAbove(column: Int, row: Int) {
         let tileSize = tileMap.tileSize
         let tilePosition = tileMap.centerOfTile(atColumn: column, row: row) //find tile position
-        let enemyPosition = CGPoint(x: tilePosition.x, y: tilePosition.y + 2 * tileSize.height) //enemy position above the tile
+        let enemyPosition = CGPoint(x: tilePosition.x, y: tilePosition.y + 3 * tileSize.height) //enemy position above the tile
         let enemy = Enemy(imageNamed: "Stickman", position: enemyPosition, zPosition: 0, name: "enemy", health: EnemyBaseStats.maxhealth)
         self.scene?.addChild(enemy)
     }

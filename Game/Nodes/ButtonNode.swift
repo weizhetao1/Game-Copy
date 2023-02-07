@@ -20,6 +20,7 @@ enum ButtonType: String {
     case rangedAttack = "RangedAttack"
     case meleeAttack = "MeleeAttack"
     case timeSlow = "TimeSlow"
+    case pause = "Pause"
 }
 
 class ButtonNode: SKShapeNode {
@@ -70,6 +71,8 @@ class ButtonNode: SKShapeNode {
             return CGPoint(x: SceneInfo.size.width * 0.40, y: SceneInfo.size.height * -0.25)
         case .timeSlow:
             return CGPoint(x: SceneInfo.size.width * 0.36, y: SceneInfo.size.height * -0.15)
+        case .pause:
+            return CGPoint(x: SceneInfo.size.width * 0.40, y: SceneInfo.size.height * 0.40)
         }
     }
     
