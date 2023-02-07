@@ -11,6 +11,7 @@ import SpriteKit
 class MapGenerator {
     
     var tileMap: SKTileMapNode = SKTileMapNode()
+    var numberOfEnemiesSpawned: Int = 0
     weak var scene: SKScene?
     
     func setUpTileMap(fileNamed fileName: String, scene: SKScene) {
@@ -84,9 +85,10 @@ class MapGenerator {
     private func spawnEnemyAbove(column: Int, row: Int) {
         let tileSize = tileMap.tileSize
         let tilePosition = tileMap.centerOfTile(atColumn: column, row: row) //find tile position
-        let enemyPosition = CGPoint(x: tilePosition.x, y: tilePosition.y + 3 * tileSize.height) //enemy position above the tile
+        let enemyPosition = CGPoint(x: tilePosition.x, y: tilePosition.y + 4 * tileSize.height) //enemy position above the tile
         let enemy = Enemy(imageNamed: "Stickman", position: enemyPosition, zPosition: 0, name: "enemy", health: EnemyBaseStats.maxhealth)
         self.scene?.addChild(enemy)
+        self.numberOfEnemiesSpawned += 1
     }
     
 }

@@ -23,7 +23,7 @@
 		C5532BAA292EDFFE00007433 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5532BA9292EDFFE00007433 /* Constants.swift */; };
 		C56C88972947383A00AA2092 /* MeleeWeapon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56C88962947383A00AA2092 /* MeleeWeapon.swift */; };
 		C58357C6292508D600A5C0B6 /* MapGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58357C5292508D600A5C0B6 /* MapGenerator.swift */; };
-		C59A84CC299304ED00459F6F /* PauseMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59A84CB299304ED00459F6F /* PauseMessage.swift */; };
+		C59A84CC299304ED00459F6F /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59A84CB299304ED00459F6F /* Message.swift */; };
 		C59C7BBC292D9DC200BDB0E7 /* HealthBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59C7BBB292D9DC200BDB0E7 /* HealthBar.swift */; };
 		C59E262129190F2E0091E81E /* SKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59E262029190F2E0091E81E /* SKNode.swift */; };
 		C5AB8F8F28D1FBA500787D73 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AB8F8E28D1FBA500787D73 /* GameScene.swift */; };
@@ -68,7 +68,7 @@
 		C5532BA9292EDFFE00007433 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C56C88962947383A00AA2092 /* MeleeWeapon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeleeWeapon.swift; sourceTree = "<group>"; };
 		C58357C5292508D600A5C0B6 /* MapGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGenerator.swift; sourceTree = "<group>"; };
-		C59A84CB299304ED00459F6F /* PauseMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMessage.swift; sourceTree = "<group>"; };
+		C59A84CB299304ED00459F6F /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		C59C7BBB292D9DC200BDB0E7 /* HealthBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthBar.swift; sourceTree = "<group>"; };
 		C59E262029190F2E0091E81E /* SKNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNode.swift; sourceTree = "<group>"; };
 		C5AB8F8E28D1FBA500787D73 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -223,7 +223,7 @@
 				C5D674FD28E8388000927904 /* ButtonNode.swift */,
 				C5532BA6292EDEA300007433 /* Bullet.swift */,
 				C56C88962947383A00AA2092 /* MeleeWeapon.swift */,
-				C59A84CB299304ED00459F6F /* PauseMessage.swift */,
+				C59A84CB299304ED00459F6F /* Message.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -361,7 +361,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C59A84CC299304ED00459F6F /* PauseMessage.swift in Sources */,
+				C59A84CC299304ED00459F6F /* Message.swift in Sources */,
 				C5AB8F8F28D1FBA500787D73 /* GameScene.swift in Sources */,
 				C59C7BBC292D9DC200BDB0E7 /* HealthBar.swift in Sources */,
 				C50E750B29815B03009700EB /* Bool.swift in Sources */,

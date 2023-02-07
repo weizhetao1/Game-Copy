@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Stickman.png",
+      "filename" : "player-idle-1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

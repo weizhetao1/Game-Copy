@@ -8,18 +8,22 @@
 import Foundation
 import SpriteKit
 
-class PauseMessage: SKLabelNode {
+class Message: SKLabelNode {
     
     override init() {
         super.init()
-        self.text = "Press Pause Button Again to Resume"
+    }
+    
+    convenience init(text: String, name: String) {
+        self.init()
+        self.text = text
         self.fontColor = .black
         self.fontName = "Chalkduster"
         self.fontSize = 20
         self.zPosition = 100
         self.verticalAlignmentMode = SKLabelVerticalAlignmentMode.center
         self.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.center
-        self.name = "PauseMessage"
+        self.name = name
         attachBackground()
     }
     

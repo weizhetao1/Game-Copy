@@ -25,7 +25,7 @@ enum PhysicsCategory {
 enum PlayerBaseStats {
     static var size: CGFloat = 32
     static var maxHealth: CGFloat = 150
-    static var startingHealth: CGFloat = 100
+    static var startingHealth: CGFloat = 150
     static var bulletDamage: CGFloat = 10
     static var meleeDamage: CGFloat = 15
     static let horizontalMoveSpeed: CGFloat = 80
@@ -45,7 +45,7 @@ enum EnemyBaseStats {
 
 enum MeleeWeaponStats {
     static let swingTime: CGFloat = 0.12
-    static let size: CGFloat = 1500
+    static let size: CGFloat = 80
 }
 
 enum SceneInfo {
@@ -58,5 +58,10 @@ enum PhysicsWorldBaseStats {
 }
 
 enum MapStats {
-    static var enemySpawnChance: CGFloat = 0.1
+    static var enemySpawnChance: CGFloat = 0.05
+}
+
+enum Messages {
+    static let pauseMessage = "Press Pause Button Again to Resume"
+    static let endMessage = "Well done! Entering new level soon..."
 }

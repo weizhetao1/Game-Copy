@@ -13,6 +13,9 @@ class Enemy: SKSpriteNode {
     private var health: CGFloat {
         didSet {
             if health <= 0 {
+                if let scene = self.scene as? GameScene {
+                    scene.enemiesLeft -= 1 //reduce number of enemies left
+                }
                 self.removeFromParent()
             }
         }

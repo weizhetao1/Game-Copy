@@ -28,6 +28,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    var enemiesLeft: Int = 0 {
+        didSet {
+            if enemiesLeft == 0 {
+                newGame()
+            }
+        }
+    }
     
     override func didMove(to view: SKView) {
         SceneInfo.size = self.size
@@ -63,6 +70,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let mapGenerator = MapGenerator()
         mapGenerator.setUpTileMap(fileNamed: "Map1.sks", scene: self)
         addChild(mapGenerator.tileMap)
+        enemiesLeft = mapGenerator.numberOfEnemiesSpawned
     }
     
     private func setUpUI() {
@@ -86,6 +94,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cameraNode.addChild(healthBar) //add to UI layer (camera node)
     }
     
+    private func newGame() {
+        let endMessage = Message(text: Messages.endMessage, name: "EndMessage")
+        self.cameraNode.addChild(endMessage)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 8.0) { //called after 8 seconds
+            let newScene = GameScene(size: self.size)
+            newScene.scaleMode = self.scaleMode
+            let transitionAnimation = SKTransition.fade(withDuration: 1.0)
+            self.view?.presentScene(newScene, transition: transitionAnimation) //present new scene to the view
+        }
+    }
+    
     func timeSlow() {
         self.physicsWorld.speed = PhysicsWorldBaseStats.timeSlowFactor //slows down the world
         self.physicsWorld.gravity = CGVector(dx: 0.0, dy: PhysicsWorldBaseStats.gravity / pow(PhysicsWorldBaseStats.timeSlowFactor, 2)) //increase gravity
@@ -99,11 +118,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func togglePause() {
         if self.isPaused == false {
-            let pauseMessage = PauseMessage()
-            let xPosition = self.frame.midX - pauseMessage.frame.size.width / 2
-            let YPosition = self.frame.midY - pauseMessage.frame.size.height / 2
-            pauseMessage.position = CGPoint(x: xPosition, y: YPosition) //set to the middle
-            self.addChild(pauseMessage)
+            let pauseMessage = Message(text: Messages.pauseMessage, name: "PauseMessage")
+            self.cameraNode.addChild(pauseMessage)
             self.isPaused = true
         } else {
             self.isPaused = false
