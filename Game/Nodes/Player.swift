@@ -18,20 +18,27 @@ class Player: SKSpriteNode {
         didSet {
             if health <= 0 {
                 health = 0 //doesn't drop below 0
+                self.invincible = true
+                if let gameScene = self.scene as? GameScene {
+                    gameScene.newGame(cause: .died)
+                }
             } else if health > maxHealth {
                 health = maxHealth //limit to max health
             }
-            healthBar?.update()
+            self.healthBar?.update()
         }
     }
     var maxHealth: CGFloat = PlayerBaseStats.maxHealth
+    private var invincible: Bool = false
     var facing: PlayerFacing = .right {
         didSet {
             switch facing {
             case .right:
                 self.meleeWeapon?.facing = .right
+                self.texture = PlayerTextures.right
             case .left:
                 self.meleeWeapon?.facing = .left
+                self.texture = PlayerTextures.left
             }
         }
     }
@@ -57,7 +64,7 @@ class Player: SKSpriteNode {
     weak var healthBar: HealthBar?
     
     init(position: CGPoint, zPosition: CGFloat) {
-        let texture = SKTexture(imageNamed: "Stickman")
+        let texture = SKTexture(imageNamed: "PlayerRight")
         super.init(texture: texture, color: .clear, size: texture.size())
         self.position = position
         self.zPosition = zPosition
@@ -120,7 +127,9 @@ class Player: SKSpriteNode {
     }
 
     func takeDamage(of damage: CGFloat) {
-        self.health -= damage
+        if !invincible { //if not invincible
+            self.health -= damage
+        }
     }
     
     func shootBullet() {

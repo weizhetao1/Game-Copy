@@ -54,7 +54,6 @@ class MapGenerator {
     
     private func addSinglePhysicsBody(name: String, column: Int, row: Int, categoryBitMask: UInt32) {
         let tileSize = tileMap.tileSize
-        
         let tileNode = SKSpriteNode(color: UIColor.clear, size: tileSize)
         tileNode.position = tileMap.centerOfTile(atColumn: column, row: row) //set tile position
         tileNode.physicsBody = SKPhysicsBody(rectangleOf: tileSize)
@@ -71,7 +70,7 @@ class MapGenerator {
             for row in 0..<tileMap.numberOfRows {
                 if let tileGroup = tileMap.tileGroup(atColumn: column, row: row) { //if there is a tile filled at this location
                     if tileGroup.name?.contains("Grass") ?? false {
-                        if (tileMap.tileGroup(atColumn: column, row: row - 1)?.name == nil) { //if tile above is empty
+                        if (tileMap.tileGroup(atColumn: column, row: row + 1)?.name == nil) { //if tile above is empty
                             if Bool.randomTrue(probability: MapStats.enemySpawnChance) {
                                 spawnEnemyAbove(column: column, row: row) //add a enemy above the tile
                             }
@@ -85,8 +84,8 @@ class MapGenerator {
     private func spawnEnemyAbove(column: Int, row: Int) {
         let tileSize = tileMap.tileSize
         let tilePosition = tileMap.centerOfTile(atColumn: column, row: row) //find tile position
-        let enemyPosition = CGPoint(x: tilePosition.x, y: tilePosition.y + 4 * tileSize.height) //enemy position above the tile
-        let enemy = Enemy(imageNamed: "Stickman", position: enemyPosition, zPosition: 0, name: "enemy", health: EnemyBaseStats.maxhealth)
+        let enemyPosition = CGPoint(x: tilePosition.x, y: tilePosition.y + tileSize.height) //enemy position above the tile
+        let enemy = Enemy(imageNamed: "PlayerRight", position: enemyPosition, zPosition: 0, name: "enemy", health: EnemyBaseStats.maxhealth)
         self.scene?.addChild(enemy)
         self.numberOfEnemiesSpawned += 1
     }

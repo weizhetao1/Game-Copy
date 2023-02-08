@@ -12,6 +12,11 @@ enum BulletTexture {
     static let bulletBlue = SKTexture(imageNamed: "BulletBlue")
 }
 
+enum PlayerTextures {
+    static let right = SKTexture(imageNamed: "PlayerRight")
+    static let left = SKTexture(imageNamed: "PlayerLeft")
+}
+
 enum PhysicsCategory {
     static let player: UInt32 = 1
     static let wall: UInt32 = 1 << 1
@@ -23,7 +28,7 @@ enum PhysicsCategory {
 }
 
 enum PlayerBaseStats {
-    static var size: CGFloat = 32
+    static var size: CGFloat = 26
     static var maxHealth: CGFloat = 150
     static var startingHealth: CGFloat = 150
     static var bulletDamage: CGFloat = 10
@@ -35,11 +40,11 @@ enum PlayerBaseStats {
 }
 
 enum EnemyBaseStats {
-    static var size: CGFloat = 32
+    static var size: CGFloat = 24
     static var maxhealth: CGFloat = 100
-    static var bulletDamage: CGFloat = 1
+    static var bulletDamage: CGFloat = 10
     static var bulletSpeed: CGFloat = 100
-    static var shootingChance: CGFloat = 0.005 //chance of chooting per frame
+    static var shootingChance: CGFloat = 0.05 //chance of chooting per frame
     static var meleeDamage: CGFloat = 3
 }
 
@@ -58,10 +63,11 @@ enum PhysicsWorldBaseStats {
 }
 
 enum MapStats {
-    static var enemySpawnChance: CGFloat = 0.05
+    static var enemySpawnChance: CGFloat = 0.12
 }
 
 enum Messages {
     static let pauseMessage = "Press Pause Button Again to Resume"
-    static let endMessage = "Well done! Entering new level soon..."
+    static let completeMessage = "Well done! Entering new level soon..."
+    static let diedMessage = "Bad luck! Trying again soon..."
 }

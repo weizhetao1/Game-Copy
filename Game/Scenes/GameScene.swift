@@ -9,6 +9,10 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
+enum NewGameCause {
+    case completed, died
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var player: Player! //There must be a player node, whether dead or alive
@@ -31,7 +35,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var enemiesLeft: Int = 0 {
         didSet {
             if enemiesLeft == 0 {
-                newGame()
+                newGame(cause: .completed)
             }
         }
     }
@@ -94,8 +98,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cameraNode.addChild(healthBar) //add to UI layer (camera node)
     }
     
-    private func newGame() {
-        let endMessage = Message(text: Messages.endMessage, name: "EndMessage")
+    func newGame(cause: NewGameCause) {
+        print("new game")
+        var endMessage = Message()
+        switch cause {
+        case .completed:
+            endMessage = Message(text: Messages.completeMessage, name: "EndMessage")
+        case .died:
+            endMessage = Message(text: Messages.diedMessage, name: "EndMessage")
+        }
         self.cameraNode.addChild(endMessage)
         DispatchQueue.main.asyncAfter(deadline: .now() + 8.0) { //called after 8 seconds
             let newScene = GameScene(size: self.size)
@@ -123,7 +134,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.isPaused = true
         } else {
             self.isPaused = false
-            self.childNode(withName: "PauseMessage")?.removeFromParent()
+            self.cameraNode.childNode(withName: "PauseMessage")?.removeFromParent()
         }
     }
     
